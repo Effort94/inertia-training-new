@@ -1,0 +1,27 @@
+version: '2'
+services:
+    project:
+        build:
+            context: docker/web
+            args:
+                - WITH_XDEBUG=true
+        container_name: warren-laravel
+        ports:
+            - "80:80"
+        volumes:
+            - .:/var/www/html
+        depends_on:
+            - mysql
+        environment:
+            XDEBUG_CONFIG: remote_host=host.docker.internal remote_port=9002
+
+    mysql:
+        image: mysql:5.7
+        container_name: laravel-db
+        environment:
+            - MYSQL_DATABASE=dummy_project
+            - MYSQL_USER=warren
+            - MYSQL_PASSWORD=root
+            - MYSQL_ROOT_PASSWORD=root
+        ports:
+            - "3306:3306"
