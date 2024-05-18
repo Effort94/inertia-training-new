@@ -36,8 +36,6 @@ Route::middleware('auth')->group(function() {
         return Inertia::render('Settings');
     });
 
-    Route::post('logout', function () {
-        dd('logging the user out');
-    });
+    Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 });
 

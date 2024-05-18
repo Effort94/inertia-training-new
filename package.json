@@ -7,9 +7,10 @@
     },
     "devDependencies": {
         "@popperjs/core": "^2.11.8",
+        "@tailwindcss/forms": "^0.5.7",
         "@vue/compiler-sfc": "^3.4.27",
         "autoprefixer": "^10.4.19",
-        "axios": "^1.6.4",
+        "axios": "^1.6.8",
         "bootstrap": "^5.3.3",
         "laravel-vite-plugin": "^1.0.0",
         "postcss": "^8.4.38",
@@ -22,7 +23,10 @@
         "@inertiajs/vue3": "^1.0.16",
         "@vitejs/plugin-vue": "^5.0.4",
         "bootstrap-vue": "^2.23.1",
+        "flowbite": "^2.3.0",
+        "flowbite-vue": "^0.1.4",
         "primevue": "^3.52.0",
-        "vue": "^3.4.27"
+        "vue": "^3.4.27",
+        "vue-tailwind": "^2.5.1"
     }
 }
