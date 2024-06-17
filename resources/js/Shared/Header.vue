@@ -1,34 +1,32 @@
 <template>
-    <div class="dark flex text-white">
-        <div class="w-full">
-            <fwb-navbar solid>
-                <div class="align-items-start">
-                        <fwb-navbar-collapse>
-                            <fwb-navbar-link is-active link="/">
-                                Home
-                            </fwb-navbar-link>
-                            <fwb-navbar-link link="/settings">
-                                Settings
-                            </fwb-navbar-link>
-                        </fwb-navbar-collapse>
-                </div>
+    <div class="w-full text-white">
+        <fwb-navbar solid>
+            <div class="align-items-start">
+                <fwb-navbar-collapse>
+                    <fwb-navbar-link>
+                        Home
+                    </fwb-navbar-link>
+                </fwb-navbar-collapse>
+            </div>
 
-                <div class="align-items-end">
-                    <div v-if="isAuthorised">
-                        <fwb-dropdown :text="name">
-                            <fwb-list-group class="w-32">
-                                <fwb-list-group-item @click="signOut" hover>Log Off</fwb-list-group-item>
-                            </fwb-list-group>
-                        </fwb-dropdown>
-                    </div>
-                    <div v-if="!isAuthorised">
-                        <fwb-button>
-                            Get started
-                        </fwb-button>
-                    </div>
-                </div>
-            </fwb-navbar>
-        </div>
+            <div v-if="isAuthorised">
+                <fwb-dropdown :text="name" class="bg-gray-800 text-white">
+                    <fwb-list-group class="w-32">
+                        <fwb-list-group-item @click="goToSettings" hover>
+                            Settings
+                        </fwb-list-group-item>
+                        <fwb-list-group-item @click="signOut" hover>
+                            Log Off
+                        </fwb-list-group-item>
+                    </fwb-list-group>
+                </fwb-dropdown>
+            </div>
+            <div v-if="!isAuthorised">
+                <fwb-button>
+                    Get started
+                </fwb-button>
+            </div>
+        </fwb-navbar>
     </div>
 </template>
 
@@ -63,8 +61,12 @@ export default {
     },
 
     methods: {
+        goToSettings() {
+            this.$inertia.visit('/users/' + this.$page.props.auth.user.id + '/settings');
+        },
         async signOut() {
             try {
+
                 const response = await this.$axios.post('/logout');
 
                 if (response.status === 200) {
@@ -75,6 +77,5 @@ export default {
             }
         }
     }
-
 }
 </script>

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -16,8 +17,8 @@ use Inertia\Inertia;
 */
 
 // Non Auth Routes
-Route::get('login', [LoginController::class, 'create'])->name('login');
-Route::post('login', [LoginController::class, 'store'])->name('store');
+Route::get('login', [LoginController::class, 'create']);
+Route::post('login', [LoginController::class, 'store']);
 
 
 // Auth Routes
@@ -32,10 +33,13 @@ Route::middleware('auth')->group(function() {
         ]);
     });
 
-    Route::get('/settings', function () {
-        return Inertia::render('Settings');
+    Route::prefix('/users/{user}/')->group(function () {
+        Route::prefix('/settings')->group(function () {
+            Route::get('', [UserController::class, 'show']);
+            Route::post('/store', [UserController::class, 'store']);
+        });
     });
 
-    Route::post('logout', [LoginController::class, 'logout'])->name('logout');
+    Route::post('logout', [LoginController::class, 'logout']);
 });
 
