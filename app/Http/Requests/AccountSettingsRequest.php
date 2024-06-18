@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Password;
 
 class AccountSettingsRequest extends FormRequest
 {
@@ -23,7 +24,7 @@ class AccountSettingsRequest extends FormRequest
     {
         return [
             'email' => ['sometimes', 'email', 'max:128'],
-            'password' => ['sometimes'],
+            'password' => ['nullable', 'confirmed', Password::min(8)],
             'password_confirmation' => ['same:password']
         ];
     }

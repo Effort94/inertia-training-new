@@ -17,12 +17,10 @@ use Inertia\Inertia;
 */
 
 // Non Auth Routes
-Route::get('login', [LoginController::class, 'create']);
+Route::get('login', [LoginController::class, 'create'])->name('login');
 Route::post('login', [LoginController::class, 'store']);
 
-
 // Auth Routes
-
 Route::middleware('auth')->group(function() {
     Route::get('/', function () {
         return Inertia::render('Home', [

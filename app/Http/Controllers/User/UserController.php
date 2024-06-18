@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\AccountSettingsRequest;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -26,20 +28,22 @@ class UserController extends Controller
      *
      * @param AccountSettingsRequest $request
      * @param User $user
-     * @return JsonResponse
+     * @return RedirectResponse
      */
-    function store(AccountSettingsRequest $request, User $user): JsonResponse
+    function store(AccountSettingsRequest $request, User $user): RedirectResponse
     {
-        // Update the user details
-        $user->update([
-            'email' => $request->input('email'),
-            'password' => !empty($request->input('password')) ?? bcrypt($request->input('password'))
-        ]);
+        $data = [
+            'email' => $request->input('email')
+        ];
 
-        // Redirect back
-        return response()->json([
-            'status' => 200,
-            'message'=>'Account settings updated'
-        ]);
+        // If Password is provided
+        if (!empty($request->input('password'))) {
+            $data['password'] = Hash::make($request->input('password'));
+        }
+
+        // Update the user details
+        $user->update($data);
+
+        return redirect()->back()->with('success', 'Account settings submitted successfully');
     }
 }
