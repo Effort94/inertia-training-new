@@ -13,7 +13,7 @@ services:
         depends_on:
             - mysql
         environment:
-            XDEBUG_CONFIG: remote_host=host.docker.internal remote_port=9002
+            XDEBUG_CONFIG: remote_host=host.docker.internal remote_port=9002 mode=debug,coverage
 
     mysql:
         image: mysql:5.7
@@ -25,3 +25,14 @@ services:
             - MYSQL_ROOT_PASSWORD=root
         ports:
             - "3306:3306"
+
+    database_test:
+        image: mysql:5.7
+        container_name: laravel-db-testing
+        environment:
+            - MYSQL_DATABASE=dummy_project
+            - MYSQL_USER=warren
+            - MYSQL_PASSWORD=root
+            - MYSQL_ROOT_PASSWORD=root
+        ports:
+            - "3307:3307"
