@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Models\User;
-use Faker\Factory as Faker;
 use Tests\TestCase;
 
 class LoginControllerTest extends TestCase
@@ -11,8 +10,6 @@ class LoginControllerTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-
-        $this->faker = Faker::create();
     }
 
     public function testCreate()
