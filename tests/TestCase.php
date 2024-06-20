@@ -3,8 +3,17 @@
 namespace Tests;
 
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Support\Facades\Artisan;
 
 abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        // Run Migrations
+        Artisan::call('migrate', ['--env' => 'testing']);
+    }
 }

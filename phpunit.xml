@@ -12,8 +12,7 @@
 
     <!-- Optional: PHP settings specific to tests -->
     <php>
-        <ini name="error_reporting" value="-1" />
-        <ini name="display_errors" value="1" />
+        <server name="APP_ENV" value="testing"/>
     </php>
 
     <!-- Code coverage configuration -->
@@ -27,5 +26,4 @@
             <directory>./tests</directory>
         </exclude>
     </source>
-
 </phpunit>

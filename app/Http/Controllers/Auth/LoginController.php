@@ -3,18 +3,31 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class LoginController extends Controller
 {
-    public function create()
+    /**
+     * Redirect to log in view
+     *
+     * @return Response
+     */
+    public function create(): Response
     {
         return Inertia::render('Auth/Login');
     }
 
-    public function store(Request $request)
+    /**
+     * Attempt to log in
+     *
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function store(Request $request): RedirectResponse
     {
         $credentials = $request->validate([
             'email' => ['required', 'email'],
@@ -32,7 +45,12 @@ class LoginController extends Controller
         ]);
     }
 
-    public function logout(Request $request)
+    /**
+     * logout
+     *
+     * @return void
+     */
+    public function logout(): void
     {
         Auth::logout();
     }
