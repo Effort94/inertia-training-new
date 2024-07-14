@@ -1,48 +1,37 @@
 <template>
-    <div class="w-full text-white">
-        <fwb-navbar solid>
-            <div class="align-items-start">
-                <fwb-navbar-collapse>
-                    <fwb-navbar-link>
-                        Home
-                    </fwb-navbar-link>
-                </fwb-navbar-collapse>
+    <div class="w-full text-white ">
+        <nav class="bg-gray-800">
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div class="flex h-16 items-center justify-between">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <img class="h-8 w-8" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company">
+                        </div>
+                        <div class="hidden md:block">
+                            <div class="ml-10 flex items-baseline space-x-4">
+                                <NavBarLinks></NavBarLinks>
+                            </div>
+                        </div>
+                    </div>
+                    <div v-if="isAuthorised">
+                        <div class="ml-4 flex items-center md:ml-6">
+                            <AccountSettingsDrodown></AccountSettingsDrodown>
+                        </div>
+                    </div>
+                </div>
             </div>
-
-            <div v-if="isAuthorised">
-                <fwb-dropdown :text="name" class="bg-gray-800 text-white">
-                    <fwb-list-group class="w-32">
-                        <fwb-list-group-item @click="goToSettings" hover>
-                            Settings
-                        </fwb-list-group-item>
-                        <fwb-list-group-item @click="signOut" hover>
-                            Log Off
-                        </fwb-list-group-item>
-                    </fwb-list-group>
-                </fwb-dropdown>
-            </div>
-            <div v-if="!isAuthorised">
-                <fwb-button>
-                    Get started
-                </fwb-button>
-            </div>
-        </fwb-navbar>
+        </nav>
     </div>
 </template>
 
 <script>
-import {
-    FwbButton,
-    FwbNavbar,
-    FwbDropdown,
-    FwbNavbarCollapse,
-    FwbNavbarLink,
-    FwbNavbarLogo, FwbListGroup, FwbListGroupItem,
-} from 'flowbite-vue'
+import NavBarLinks from './NavBarLinks.vue'
+import AccountSettingsDrodown from '@/Components/Header/AccountSettingsDrodown.vue'
 export default {
     components: {
-        FwbListGroupItem,
-        FwbListGroup, FwbNavbar, FwbDropdown, FwbButton, FwbNavbarCollapse, FwbNavbarLink, FwbNavbarLogo },
+        AccountSettingsDrodown,
+        NavBarLinks
+    },
 
     data() {
         return {
@@ -51,31 +40,9 @@ export default {
     },
 
     computed: {
-        name() {
-            return this.$page.props.auth.user.name
-        },
-
         isAuthorised() {
             return this.$page.props.auth !== null
         }
     },
-
-    methods: {
-        goToSettings() {
-            this.$inertia.visit('/users/' + this.$page.props.auth.user.id + '/settings');
-        },
-        async signOut() {
-            try {
-
-                const response = await this.$axios.post('/logout');
-
-                if (response.status === 200) {
-                    this.$inertia.visit('/login');
-                }
-            } catch (error) {
-                console.error('Logout failed:', error);
-            }
-        }
-    }
 }
 </script>

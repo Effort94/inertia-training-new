@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Game\LeagueOfLegendController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -36,6 +37,10 @@ Route::middleware('auth')->group(function() {
             Route::get('', [UserController::class, 'show']);
             Route::post('/store', [UserController::class, 'store']);
         });
+    });
+
+    Route::prefix('league-of-legends')->group(function () {
+        Route::get('/', [LeagueOfLegendController::class, 'show']);
     });
 
     Route::post('logout', [LoginController::class, 'logout']);

@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
 use Tests\TestCase;
 
 class UserControllerTest extends TestCase
