@@ -1,5 +1,5 @@
 <template class="dark">
-    <v-dropdown placement="right">
+    <Dropdown placement="right">
         <template v-slot:button>
             <span class="mr-2">{{ name }}</span>
             <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -12,16 +12,16 @@
             <hr class="border-gray-300 dark:border-gray-600"/>
             <button class="flex w-full justify-between items-center rounded px-2 py-1 my-1 hover:bg-gray-700" @click="signOut">Logout</button>
         </template>
-    </v-dropdown>
+    </Dropdown>
 </template>
 
 
 <script>
-import VDropdown from "@/Shared/v-dropdown.vue";
+import Dropdown from "@/Shared/Form/Dropdown.vue";
 export default {
     name: "AccountSettingsDrodown.vue",
     components: {
-        VDropdown
+        Dropdown
     },
 
     computed: {

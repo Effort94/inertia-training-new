@@ -4,9 +4,6 @@ import {createInertiaApp} from '@inertiajs/vue3'
 import '../css/app.css'
 import axios from "axios";
 
-// Import Flowbite styles
-import 'floating-vue/dist/style.css'
-
 // Create an Axios instance
 const axiosInstance = axios.create({
     headers: {
