@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Game\LeagueOfLegendController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
@@ -18,8 +19,9 @@ use Inertia\Inertia;
 */
 
 // Non Auth Routes
-Route::get('login', [LoginController::class, 'create'])->name('login');
+Route::get('login', [LoginController::class, 'show']);
 Route::post('login', [LoginController::class, 'store']);
+Route::get('register', [RegisterController::class, 'show']);
 
 // Auth Routes
 Route::middleware('auth')->group(function() {
