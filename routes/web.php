@@ -22,6 +22,7 @@ use Inertia\Inertia;
 Route::get('login', [LoginController::class, 'show']);
 Route::post('login', [LoginController::class, 'store']);
 Route::get('register', [RegisterController::class, 'show']);
+Route::post('register', [RegisterController::class, 'create']);
 
 // Auth Routes
 Route::middleware('auth')->group(function() {

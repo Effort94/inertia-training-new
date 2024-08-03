@@ -20,15 +20,15 @@
             </div>
 
             <div class="mb-6">
-                <Text name="Confirm Password" type="password" v-model="form.password"></Text>
-                <div v-if="form.errors.confirmPassword" v-text="form.errors.confirmPassword" class="text-red-500 text-sm mt-2"></div>
+                <Text name="Confirm Password" type="password" v-model="form.password_confirmation"></Text>
+                <div v-if="form.errors.password_confirmation" v-text="form.errors.password_confirmation" class="text-red-500 text-sm mt-2"></div>
             </div>
 
             <Button name="Register" eventName="submit"></Button>
 
             <hr>
 
-            <p class="mt-4 text-gray-700 dark:text-gray-300">Don't have an account? <a href="register" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Register</a> </p>
+            <p class="mt-4 text-gray-700 dark:text-gray-300">Already have an account? <a href="login" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Login</a> </p>
         </form>
     </div>
 </template>
@@ -50,13 +50,13 @@
                     name: '',
                     email: '',
                     password: '',
-                    confirmPassword: ''
+                    password_confirmation: ''
                 })
             }
         },
         methods: {
             submit() {
-                this.form.post('/login');
+                this.form.post('/register');
             }
         }
     }
