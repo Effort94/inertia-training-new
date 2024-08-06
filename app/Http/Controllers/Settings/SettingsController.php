@@ -1,36 +1,37 @@
 <?php
 
-namespace App\Http\Controllers\User;
+namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\AccountSettingsRequest;
 use App\Models\User;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class UserController extends Controller
+class SettingsController extends Controller
 {
     /**
-     * Redirect user to 'Account Settings' view
+     * Redirect user to 'Settings' view
      *
+     * @param Request $request
+     * @param User $user
      * @return Response
      */
-    function show(): Response
+    public function show(Request $request, User $user): Response
     {
         return Inertia::render('Settings');
     }
 
     /**
-     * Store account settings
+     * Update settings
      *
-     * @param AccountSettingsRequest $request
+     * @param Request $request
      * @param User $user
      * @return RedirectResponse
      */
-    function store(AccountSettingsRequest $request, User $user): RedirectResponse
+    public function update(Request $request, User $user): RedirectResponse
     {
         $data = [
             'email' => $request->input('email')

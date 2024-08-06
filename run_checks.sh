@@ -11,7 +11,7 @@ if [ $? -ne 0 ]; then
 fi
 
 # Run PSALM
-vendor/bin/psalm --show-info=true
+vendor/bin/psalm
 
 # Check the exit status of PSALM
 if [ $? -ne 0 ]; then
