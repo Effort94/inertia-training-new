@@ -11,7 +11,7 @@ export default {
 </script>
 
 <template>
-    <Link :class="{'bg-gray-900 text-white rounded-md px-3 py-2' : active }">
+    <Link :class="{'bg-gray-900 text-white rounded-md px-3' : active }">
         <slot />
     </Link>
 </template>

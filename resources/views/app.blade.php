@@ -6,6 +6,7 @@
     <title>Laravel Training</title>
         @vite('resources/js/app.js')
         @vite('resources/css/app.css')
+    <script src="https://kit.fontawesome.com/f042eacbb7.js" crossorigin="anonymous"></script>
     @inertiaHead
 </head>
 <body>

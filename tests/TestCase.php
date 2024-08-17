@@ -3,9 +3,9 @@
 namespace Tests;
 
 use App\Models\User;
+use Faker\Factory as Faker;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\Artisan;
-use Faker\Factory as Faker;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -20,12 +20,12 @@ abstract class TestCase extends BaseTestCase
         Artisan::call('migrate', ['--env' => 'testing']);
     }
 
-    public function beAuthenticatedUser() : User
+    public function beAuthenticatedUser(): User
     {
         $user = User::create([
             'name' => $this->faker->name,
             'email' => $this->faker->email,
-            'password' => $this->faker->password
+            'password' => $this->faker->password,
         ]);
 
         $this->be($user);

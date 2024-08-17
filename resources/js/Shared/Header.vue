@@ -15,7 +15,7 @@
                     </div>
                     <div v-if="isAuthorised">
                         <div class="ml-4 flex items-center md:ml-6">
-                            <AccountSettingsDrodown></AccountSettingsDrodown>
+                            <AccountSettingsDropdown></AccountSettingsDropdown>
                         </div>
                     </div>
                 </div>
@@ -26,10 +26,10 @@
 
 <script>
 import NavBarLinks from './NavBarLinks.vue'
-import AccountSettingsDrodown from '@/Components/Header/AccountSettingsDrodown.vue'
+import AccountSettingsDropdown from '@/Components/Header/AccountSettingsDrodown.vue'
 export default {
     components: {
-        AccountSettingsDrodown,
+        AccountSettingsDropdown,
         NavBarLinks
     },
 

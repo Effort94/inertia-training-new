@@ -24,7 +24,7 @@ class UserControllerTest extends TestCase
 
         // Update Email Address
         $this->post("users/{$this->user->id}/settings/store", [
-            'email' => $this->faker->email
+            'email' => $this->faker->email,
         ]);
 
         // Check that the email address has been updated, but the password hasn't
@@ -36,7 +36,7 @@ class UserControllerTest extends TestCase
         $this->post("users/{$this->user->id}/settings/store", [
             'email' => $this->faker->email,
             'password' => $password,
-            'password_confirmation' => $password
+            'password_confirmation' => $password,
         ]);
 
         // Check that all user settings have been updated.

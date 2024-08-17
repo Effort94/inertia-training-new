@@ -25,7 +25,7 @@ class AccountSettingsRequest extends FormRequest
         return [
             'email' => ['sometimes', 'email', 'max:128'],
             'password' => ['nullable', 'confirmed', Password::min(8)],
-            'password_confirmation' => ['same:password']
+            'password_confirmation' => ['same:password'],
         ];
     }
 }

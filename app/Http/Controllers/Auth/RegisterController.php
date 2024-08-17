@@ -15,8 +15,6 @@ class RegisterController extends Controller
 {
     /**
      * Redirect to register view
-     *
-     * @return Response
      */
     public function show(): Response
     {
@@ -25,16 +23,13 @@ class RegisterController extends Controller
 
     /**
      * Attempt to create new user
-     *
-     * @param RegisterRequest $request
-     * @return HttpResponse
      */
     public function create(RegisterRequest $request): HttpResponse
     {
         // Store the credentials
         $credentials = [
             'email' => $request->get('email'),
-            'password' => $request->get('password')
+            'password' => $request->get('password'),
         ];
 
         // Attempt to create the user

@@ -11,21 +11,17 @@
                 <h1 class="text-3xl mb-6 dark:text-white">Account Settings</h1>
 
                 <div class="mb-6">
-                    <label class="block text-gray-700 dark:text-gray-300 mb-2" for="email">Email</label>
-                    <input v-model="form.email" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500" type="email" name="email">
-
+                    <Text name="Email" v-model="form.email" type="email"></Text>
                     <div v-if="form.errors.email" v-text="form.errors.email" class="text-red-500 text-sm mt-2"></div>
                 </div>
-                <div class="mb-6">
-                    <label class="block text-gray-700 dark:text-gray-300 mb-2" for="password">Password</label>
-                    <input v-model="form.password" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500" type="password" name="email">
 
+                <div class="mb-6">
+                    <Text name="Password" v-model="form.password" type="password"></Text>
                     <div v-if="form.errors.password" v-text="form.errors.password" class="text-red-500 text-sm mt-2"></div>
                 </div>
 
                 <div class="mb-6">
-                    <label class="block text-gray-700 dark:text-gray-300 mb-2" for="email">Confirm Password</label>
-                    <input v-model="form.password_confirmation" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500" type="password" name="email">
+                    <Text name="Confirm Password" v-model="form.password_confirmation" type="password"></Text>
                     <div v-if="form.errors.password_confirmation" v-text="form.errors.password_confirmation" class="text-red-500 text-sm mt-2"></div>
                 </div>
 
@@ -37,10 +33,12 @@
 
 <script>
     import Layout from "@/Shared/Layout.vue"
-    import {useForm, usePage} from '@inertiajs/vue3';
+    import { useForm } from '@inertiajs/vue3';
+    import Text from "@/Shared/Form/Text.vue";
 
     export default {
         components: {
+            Text,
             Layout
         },
 
@@ -61,7 +59,7 @@
                 this.success = {};
                 this.errors = {};
 
-                this.form.post('/users/' + this.$page.props.auth.user.id + '/settings/store', {
+                this.form.post('/users/' + this.$page.props.auth.user.id + '/settings/update', {
                     onSuccess: () => {
                         this.success = this.$page.props.flash.success
                     },

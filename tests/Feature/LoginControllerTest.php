@@ -22,24 +22,24 @@ class LoginControllerTest extends TestCase
         // User does not exist
         $this->post('/login', [
             'email' => $this->faker->email(),
-            'password' => $this->faker->password()
+            'password' => $this->faker->password(),
         ]);
 
         $error_message = $this->app->make('session')->get('errors')->first();
-        $this->assertStringContainsString("do not match", $error_message);
+        $this->assertStringContainsString('do not match', $error_message);
 
         // Create a user
         $password = $this->faker->password();
         $user = User::create([
             'name' => $this->faker->name(),
             'email' => $this->faker->email(),
-            'password' => $password
+            'password' => $password,
         ]);
 
         // Attempt to log in with existing user credentials
         $this->post('/login', [
             'email' => $user->email,
-            'password' => $password
+            'password' => $password,
         ]);
 
         // Check we're logged in
@@ -53,13 +53,13 @@ class LoginControllerTest extends TestCase
         $user = User::create([
             'name' => $this->faker->name(),
             'email' => $this->faker->email(),
-            'password' => $password
+            'password' => $password,
         ]);
 
         // Attempt to log in with existing user credentials
         $this->post('/login', [
             'email' => $user->email,
-            'password' => $password
+            'password' => $password,
         ]);
 
         $this->post('logout');
