@@ -6,9 +6,14 @@ use App\Models\Task;
 
 class TaskService
 {
-    public function fetchIndexDataForDatatable(): array
+    public function fetchIndexDataForDatatable(array $parameters): array
     {
-        $tasks = Task::get()->take(10);
+        $tasks = Task::when($parameters['search'], function ($query, $search) {
+            return $query->where('title', 'like', '%' . $search . '%')
+                            ->orWhere('description', 'like', '%' . $search . '%');
+        })
+            ->orderBy($parameters['sort_field'], $parameters['sort_order'])
+            ->paginate();
 
         return [
             'data' => $tasks
