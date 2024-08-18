@@ -1,6 +1,5 @@
 <template>
     <Layout>
-
         <div class="relative overflow-x-auto shadow-md">
             <div class="flex items-center justify-between flex-column md:flex-row flex-wrap space-y-4 md:space-y-0 py-4 bg-white dark:bg-gray-900">
                 <div>
@@ -46,15 +45,31 @@
                     </th>
                     <th @click="sortBy('title')" scope="col" class="px-6 py-3">
                         Title
+                        <span v-if="filters.sortField === 'title'" :class="{
+                          'fas fa-sort-up': filters.sortField && filters.sortOrder === 'desc',
+                          'fas fa-sort-down': filters.sortField && filters.sortOrder === 'asc'
+                        }"></span>
                     </th>
                     <th @click="sortBy('description')" scope="col" class="px-6 py-3">
                         Description
+                        <span v-if="filters.sortField === 'description'" :class="{
+                          'fas fa-sort-up': filters.sortField && filters.sortOrder === 'desc',
+                          'fas fa-sort-down': filters.sortField && filters.sortOrder === 'asc'
+                        }"></span>
                     </th>
                     <th @click="sortBy('priority')" scope="col" class="px-6 py-3">
                         Priority
+                        <span v-if="filters.sortField === 'priority'" :class="{
+                          'fas fa-sort-up': filters.sortField && filters.sortOrder === 'desc',
+                          'fas fa-sort-down': filters.sortField && filters.sortOrder === 'asc'
+                        }"></span>
                     </th>
                     <th @click="sortBy('status')" scope="col" class="px-6 py-3">
                         Status
+                        <span v-if="filters.sortField === 'status'" :class="{
+                          'fas fa-sort-up': filters.sortField && filters.sortOrder === 'desc',
+                          'fas fa-sort-down': filters.sortField && filters.sortOrder === 'asc'
+                        }"></span>
                     </th>
                 </tr>
                 </thead>
@@ -148,19 +163,14 @@ export default {
                     prev_page_url: response.data.data.prev_page_url,
                     next_page_url: response.data.data.next_page_url,
                 }
-                this.updateSelectedIds();
             } catch (error) {
                 console.log(error)
             }
         },
         sortBy(field) {
-            this.sortField = field;
-            this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
+            this.filters.sortField = field;
+            this.filters.sortOrder = this.filters.sortOrder === 'asc' ? 'desc' : 'asc';
             this.fetchTasks();
-        },
-        updateSelectedIds() {
-            // Ensure only IDs in the current set of tasks are in selectedIds
-            this.selectedIds = this.selectedIds.filter(id => this.tasks.some(task => task.id === id));
         },
     },
     computed: {
