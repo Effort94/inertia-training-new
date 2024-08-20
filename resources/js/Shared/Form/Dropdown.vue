@@ -27,7 +27,6 @@ export default {
         placement: {
             type: String,
             default: "right",
-            validator: (value) => ["right", "left"].indexOf(value) !== -1,
         },
     },
     mounted() {

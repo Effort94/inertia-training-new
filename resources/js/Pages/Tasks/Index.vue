@@ -23,7 +23,7 @@
                         id="table-search-users"
                         class="block pt-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         v-model="filters.search"
-                        @input="fetchTasks"
+                        @keyup="fetchTasks()"
                         placeholder="Search for users"
                     >
                 </div>
@@ -92,9 +92,7 @@
                     <td class="px-6 py-4">
                         {{ task.description }}
                     </td>
-                    <td class="px-6 py-4">
-                        {{ task.priority}}
-                    </td>
+                    <td v-html="task.priority" class="px-6 py-4"></td>
                     <td class="px-6 py-4">
                         <a href="#" type="button" data-modal-target="editUserModal" data-modal-show="editUserModal" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
                     </td>
@@ -150,7 +148,6 @@ export default {
             }
         },
         async fetchTasks(url = '/tasks/index-data') {
-            try {
                 const response = await axios.get(url, {
                     params: {
                         search: this.filters.search,
@@ -158,14 +155,12 @@ export default {
                         sortOrder: this.filters.sortOrder,
                     },
                 })
+                console.log(response)
                 this.tasks = response.data.data.data;
                 this.pagination = {
                     prev_page_url: response.data.data.prev_page_url,
                     next_page_url: response.data.data.next_page_url,
                 }
-            } catch (error) {
-                console.log(error)
-            }
         },
         sortBy(field) {
             this.filters.sortField = field;
@@ -180,3 +175,14 @@ export default {
     }
 }
 </script>
+<style>
+.fa-arrow-up {
+    color: red;
+}
+.fa-arrow-down {
+    color: green;
+}
+.fa-arrow-right {
+    color: orange;
+}
+</style>
