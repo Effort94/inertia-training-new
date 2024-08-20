@@ -28,83 +28,99 @@
                     >
                 </div>
             </div>
-            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <tr>
-                    <th scope="col" class="p-4">
-                        <div class="flex items-center">
-                            <input
-                                id="checkbox-all-search"
-                                type="checkbox"
-                                @change="toggleSelectAll($event)"
-                                :checked="areAllSelected"
-                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                            >
-                            <label for="checkbox-all-search" class="sr-only">checkbox</label>
-                        </div>
-                    </th>
-                    <th @click="sortBy('title')" scope="col" class="px-6 py-3">
-                        Title
-                        <span v-if="filters.sortField === 'title'" :class="{
+            <div class="flex-grow">
+                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="p-4">
+                            <div class="flex items-center">
+                                <input
+                                    id="checkbox-all-search"
+                                    type="checkbox"
+                                    @change="toggleSelectAll($event)"
+                                    :checked="areAllSelected"
+                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                                >
+                                <label for="checkbox-all-search" class="sr-only">checkbox</label>
+                            </div>
+                        </th>
+                        <th @click="sortBy('title')" scope="col" class="px-6 py-3">
+                            Title
+                            <span v-if="filters.sortField === 'title'" :class="{
                           'fas fa-sort-up': filters.sortField && filters.sortOrder === 'desc',
                           'fas fa-sort-down': filters.sortField && filters.sortOrder === 'asc'
                         }"></span>
-                    </th>
-                    <th @click="sortBy('description')" scope="col" class="px-6 py-3">
-                        Description
-                        <span v-if="filters.sortField === 'description'" :class="{
+                        </th>
+                        <th @click="sortBy('description')" scope="col" class="px-6 py-3">
+                            Description
+                            <span v-if="filters.sortField === 'description'" :class="{
                           'fas fa-sort-up': filters.sortField && filters.sortOrder === 'desc',
                           'fas fa-sort-down': filters.sortField && filters.sortOrder === 'asc'
                         }"></span>
-                    </th>
-                    <th @click="sortBy('priority')" scope="col" class="px-6 py-3">
-                        Priority
-                        <span v-if="filters.sortField === 'priority'" :class="{
+                        </th>
+                        <th @click="sortBy('priority')" scope="col" class="px-6 py-3">
+                            Priority
+                            <span v-if="filters.sortField === 'priority'" :class="{
                           'fas fa-sort-up': filters.sortField && filters.sortOrder === 'desc',
                           'fas fa-sort-down': filters.sortField && filters.sortOrder === 'asc'
                         }"></span>
-                    </th>
-                    <th @click="sortBy('status')" scope="col" class="px-6 py-3">
-                        Status
-                        <span v-if="filters.sortField === 'status'" :class="{
-                          'fas fa-sort-up': filters.sortField && filters.sortOrder === 'desc',
-                          'fas fa-sort-down': filters.sortField && filters.sortOrder === 'asc'
-                        }"></span>
-                    </th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="task in tasks" :id="task.id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                    <td class="w-4 p-4">
-                        <div class="flex items-center">
-                            <input
-                                id="checkbox-table-search-1"
-                                type="checkbox"
-                                :value="task.id"
-                                v-model="selectedIds"
-                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                            <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
-                        </div>
-                    </td>
-                    <th scope="row" class="flex items-center px-6 py-4 whitespace-nowrap">
-                        {{ task.title }}
-                    </th>
-                    <td class="px-6 py-4">
-                        {{ task.description }}
-                    </td>
-                    <td v-html="task.priority" class="px-6 py-4"></td>
-                    <td class="px-6 py-4">
-                        <a href="#" type="button" data-modal-target="editUserModal" data-modal-show="editUserModal" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-            <!-- Pagination -->
-            <div>
-                <button :disabled="!pagination.prev_page_url" @click="fetchTasks(pagination.prev_page_url)">Previous</button>
-                <button :disabled="!pagination.next_page_url" @click="fetchTasks(pagination.next_page_url)">Next</button>
+                        </th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="task in tasks" :id="task.id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                        <td class="w-4 p-4">
+                            <div class="flex items-center">
+                                <input
+                                    id="checkbox-table-search-1"
+                                    type="checkbox"
+                                    :value="task.id"
+                                    v-model="selectedIds"
+                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
+                            </div>
+                        </td>
+                        <td scope="row" class="flex items-center px-6 py-4">
+                            {{ task.title }}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{ task.description }}
+                        </td>
+                        <td v-html="task.priority" class="px-6 py-4"></td>
+                        <td class="px-6 py-4">
+                            <a href="#" type="button" data-modal-target="editUserModal" data-modal-show="editUserModal" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
 
+            <nav>
+                <ul class="flex h-10 w-full justify-center">
+                    <li>
+                        <a href="#" class="flex items-center justify-center px-4 h-10 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
+                    </li>
+                    <li>
+                        <a href="#" aria-current="page" class="flex items-center justify-center px-4 h-10 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">4</a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">5</a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
+                    </li>
+                </ul>
+            </nav>
             <div>
                 <h3>Selected IDs:</h3>
                 <p>{{ selectedIds }}</p>

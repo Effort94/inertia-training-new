@@ -48,10 +48,10 @@ class TaskService
         if (isset($parameters['sort_field'])) {
 
             if ($parameters['sort_field'] === 'priority') {
+                $query->orderBy('priority_id', $parameters['sort_order']);
+            } else {
                 $query->orderBy($parameters['sort_field'], $parameters['sort_order']);
             }
-
-            $query->orderBy($parameters['sort_field'], $parameters['sort_order']);
         }
 
         return $query;
