@@ -19,7 +19,7 @@ class PrioritySeeder extends Seeder
 
         Priority::updateOrCreate(
             ['name' => 'Medium'],
-            ['icon' => 'fa-solid fa-arrow-left']
+            ['icon' => 'fa-solid fa-arrow-right']
         );
 
         Priority::updateOrCreate(

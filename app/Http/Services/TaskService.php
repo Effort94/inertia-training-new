@@ -30,7 +30,7 @@ class TaskService
                 return [
                     'title' => $task->title,
                     'description' => $task->description,
-                    'priority' => $this->getPriorityIcon($task->priority),
+                    'priority' => "<span class=\"{$task->priority->icon}\"></span>",
                 ];
             })->toArray()
         ];
@@ -55,15 +55,5 @@ class TaskService
         }
 
         return $query;
-    }
-
-    public function getPriorityIcon(String $priority): string
-    {
-        return match ($priority) {
-            'high' => '<span class="fa-solid fa-arrow-up"></span>',
-            'medium' => '<span class="fa-solid fa-arrow-right"></span>',
-            'low' => '<span class="fa-solid fa-arrow-down"></span>',
-            default => '❓',
-        };
     }
 }

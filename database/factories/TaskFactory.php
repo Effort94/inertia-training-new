@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Priority;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -21,7 +22,7 @@ class TaskFactory extends Factory
             'title' => $this->faker->sentence,
             'description' => $this->faker->paragraph,
             'status' => $this->faker->randomElement(['pending', 'in-progress', 'completed']),
-            'priority' => $this->faker->randomElement(['low', 'medium', 'high']),
+            'priority_id' => Priority::inRandomOrder()->first()->id,
             'due_date' => $this->faker->dateTimeBetween('now', '+1 month'),
             'user_id' => User::inRandomOrder()->first()->id,
         ];
