@@ -4,10 +4,15 @@ namespace App\Http\Services;
 
 use App\Models\Task;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Collection;
 
 class TaskService
 {
+    /**
+     * Prepare the data required for the tasks datatable.
+     *
+     * @param array $parameters
+     * @return array[]
+     */
     public function fetchIndexDataForDatatable(array $parameters): array
     {
         $query = Task::query();
@@ -15,27 +20,55 @@ class TaskService
         $query = $this->filterIndexData($query, $parameters);
 
         // Format Data
-        $tasks = $query->get();
-        $tasks = $this->formatIndexData($tasks);
+        $tasks = $query->paginate($parameters['limit']);
+
+        // assign pagination
+        $last_page = $tasks->lastPage();
+        $previous_page = $tasks->previousPageUrl();
+        $next_page = $tasks->nextPageUrl();
+        $current_page = $tasks->currentPage();
+
+        // Work out total records and format data
+        $total_records = $tasks->total();
+        $tasks = $this->formatIndexData($tasks->items());
 
         return [
-            'data' => $tasks
+            'data' => $tasks,
+            'last_page' => $last_page,
+            'total_records' => $total_records,
+            'previous_page' => $previous_page,
+            'next_page' => $next_page,
+            'current_page' => $current_page
         ];
     }
 
-    public function formatIndexData(Collection $tasks): array
+    /**
+     * Format data
+     *
+     * @param array $tasks
+     * @return array
+     */
+    public function formatIndexData(array $tasks): array
     {
-        return [
-            'data' => $tasks->map(function ($task) {
-                return [
-                    'title' => $task->title,
-                    'description' => $task->description,
-                    'priority' => "<span class=\"{$task->priority->icon}\"></span>",
-                ];
-            })->toArray()
-        ];
+        $data = [];
+        foreach ($tasks as $task) {
+            $data[] = [
+                'title' => $task->title,
+                'description' => $task->description,
+                'priority' => "<span class=\"{$task->priority->icon}\"></span>",
+            ];
+        }
+
+        return $data;
     }
 
+    /**
+     * Handles filtering the query for the tasks datatable
+     *
+     * @param Builder $query
+     * @param array $parameters
+     * @return Builder
+     */
     public function filterIndexData(Builder $query, array $parameters): Builder
     {
         // Search

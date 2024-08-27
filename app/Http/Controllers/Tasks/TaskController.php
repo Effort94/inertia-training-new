@@ -21,6 +21,8 @@ class TaskController extends Controller
             'search' => $request->get('search'),
             'sort_field' => $request->get('sortField', 'id'),
             'sort_order' => $request->get('sortOrder', 'asc'),
+            'page' => $request->get('page', 1),
+            'limit' => $request->get('limit', 10),
         ];
 
         return app(TaskService::class)->fetchIndexDataForDatatable($parameters);

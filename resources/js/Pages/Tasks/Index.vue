@@ -96,34 +96,86 @@
                 </table>
             </div>
 
-            <nav>
-                <ul class="flex h-10 w-full justify-center">
-                    <li>
-                        <a href="#" class="flex items-center justify-center px-4 h-10 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
-                    </li>
-                    <li>
-                        <a href="#" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
-                    </li>
-                    <li>
-                        <a href="#" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
-                    </li>
-                    <li>
-                        <a href="#" aria-current="page" class="flex items-center justify-center px-4 h-10 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
-                    </li>
-                    <li>
-                        <a href="#" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">4</a>
-                    </li>
-                    <li>
-                        <a href="#" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">5</a>
-                    </li>
-                    <li>
-                        <a href="#" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
-                    </li>
-                </ul>
-            </nav>
-            <div>
-                <h3>Selected IDs:</h3>
-                <p>{{ selectedIds }}</p>
+            <!--    Pagination    -->
+            <div class="flex items-center justify-between border-t border-gray-200 px-4 py-3 sm:px-6 text-gray-500 dark:text-gray-400">
+                <!-- Left: Showing results info -->
+                <div class="text-sm text-gray-700">
+                    <p>
+                        Showing
+                        <span class="font-medium">{{ startRecord }}</span>
+                        to
+                        <span class="font-medium">{{ endRecord }}</span>
+                        of
+                        <span class="font-medium">{{ pagination.totalRecords }}</span>
+                        results
+                    </p>
+                </div>
+
+                <!-- Center: Pagination Controls -->
+                <nav class="pagination-container flex justify-center  " aria-label="Pagination">
+                    <ul class="flex h-10 items-center space-x-2">
+                        <!-- Previous Button -->
+                        <li>
+                            <a
+                                href="#"
+                                @click.prevent="changePage(pagination.currentPage - 1)"
+                                :class="[
+                              'flex items-center justify-center px-4 h-10 leading-tight border rounded-md',
+                              'text-gray-400 bg-gray-100 border-gray-300 hover:bg-gray-200 hover:text-gray-700',
+                              { 'cursor-not-allowed opacity-50': !pagination.prevPageUrl }
+                            ]"
+                                :aria-disabled="!pagination.prevPageUrl"
+                            >
+                                Previous
+                            </a>
+                        </li>
+
+                        <!-- Page Numbers -->
+                        <li v-for="page in pagination.lastPage" :key="page">
+                            <a
+                                href="#"
+                                @click.prevent="changePage(page)"
+                                :class="[
+                              'flex items-center justify-center px-4 h-10 leading-tight border rounded-md',
+                              page === pagination.currentPage
+                                ? 'text-white bg-indigo-600 hover:bg-indigo-500'
+                                : 'text-gray-400 bg-gray-100 border-gray-300 hover:bg-gray-200 hover:text-gray-700'
+                            ]"
+                            >
+                                {{ page }}
+                            </a>
+                        </li>
+
+                        <!-- Next Button -->
+                        <li>
+                            <a
+                                href="#"
+                                @click.prevent="changePage(pagination.currentPage + 1)"
+                                :class="[
+                              'flex items-center justify-center px-4 h-10 leading-tight border rounded-md',
+                              'text-gray-400 bg-gray-100 border-gray-300 hover:bg-gray-200 hover:text-gray-700',
+                              { 'cursor-not-allowed opacity-50': !pagination.nextPageUrl }
+                            ]"
+                                :aria-disabled="!pagination.nextPageUrl"
+                            >
+                                Next
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+
+                <!-- Right: Rows per page selector -->
+                <div class="rows-per-page-selector flex items-center">
+                    <label for="rowsPerPage" class="mr-2 text-sm text-gray-700 dark:text-gray-400">Rows per page:</label>
+                    <select
+                        id="rowsPerPage"
+                        v-model="pagination.rowsPerPage"
+                        @change="changePage(1)"
+                        class="px-3 py-2 border border-gray-300 rounded-md text-sm bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400"
+                    >
+                        <option v-for="option in pagination.rowsPerPageOptions" :key="option" :value="option">{{ option }}</option>
+                    </select>
+                </div>
             </div>
         </div>
     </Layout>
@@ -142,7 +194,11 @@ export default {
         return {
             tasks: [],
             selectedIds: [],
-            pagination: {},
+            pagination: {
+                page: 1,
+                rowsPerPage: 15,
+                rowsPerPageOptions: [15, 25, 50, 100],
+            },
             filters: {
                 search: '',
                 sortField: 'id',
@@ -169,19 +225,38 @@ export default {
                         search: this.filters.search,
                         sortField: this.filters.sortField,
                         sortOrder: this.filters.sortOrder,
+                        page: this.pagination.page,
+                        limit: this.pagination.rowsPerPage
                     },
                 })
-                console.log(response)
-                this.tasks = response.data.data.data;
+                this.tasks = response.data.data;
                 this.pagination = {
-                    prev_page_url: response.data.data.prev_page_url,
-                    next_page_url: response.data.data.next_page_url,
+                    ...this.pagination,
+                    prevPageUrl: response.data.previous_page,
+                    nextPageUrl: response.data.next_page,
+                    totalRecords: response.data.total_records,
+                    lastPage: response.data.last_page,
+                    currentPage: response.data.current_page
                 }
+                console.log(this.pagination);
         },
         sortBy(field) {
             this.filters.sortField = field;
             this.filters.sortOrder = this.filters.sortOrder === 'asc' ? 'desc' : 'asc';
             this.fetchTasks();
+        },
+        isCurrentPage(page) {
+            return this.pagination.currentPage === page;
+        },
+        changePage(page) {
+            if (page < 1 || page > this.pagination.lastPage) {
+                return null;
+            }
+
+            this.pagination.page = page;
+
+            // Fetch data
+            this.fetchTasks(`/tasks/index-data?page=${page}`)
         },
     },
     computed: {
