@@ -42,6 +42,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('tasks')->group(function () {
         Route::get('/', [TaskController::class, 'show'])->name('tasks.show');
         Route::get('/index-data', [TaskController::class, 'indexData'])->name('tasks.data');
+        Route::get('/index-data/filters', [TaskController::class, 'getFilters'])->name('tasks.filters');
     });
 
     Route::post('logout', [LoginController::class, 'logout'])->name('logout');

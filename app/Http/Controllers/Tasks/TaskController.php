@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Tasks;
 
 use App\Http\Services\TaskService;
+use App\Models\Priority;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Inertia\Controller;
 use Inertia\Inertia;
@@ -26,5 +28,21 @@ class TaskController extends Controller
         ];
 
         return app(TaskService::class)->fetchIndexDataForDatatable($parameters);
+    }
+
+    /**
+     * Get filter options for Tasks Datatable
+     *
+     * @return JsonResponse
+     */
+    public function getFilters(): JsonResponse
+    {
+        $priorities = Priority::select('name', 'id')->distinct()->pluck('name', 'id');
+        $test = Priority::select('name', 'id')->distinct()->pluck('name', 'id');
+
+        return response()->json([
+            'priorities' => $priorities,
+            'test' => $test
+        ]);
     }
 }

@@ -27,6 +27,8 @@ class TaskService
         $previous_page = $tasks->previousPageUrl();
         $next_page = $tasks->nextPageUrl();
         $current_page = $tasks->currentPage();
+        $from = $tasks->firstItem();
+        $to =  $tasks->lastItem();
 
         // Work out total records and format data
         $total_records = $tasks->total();
@@ -38,7 +40,9 @@ class TaskService
             'total_records' => $total_records,
             'previous_page' => $previous_page,
             'next_page' => $next_page,
-            'current_page' => $current_page
+            'current_page' => $current_page,
+            'from' => $from,
+            'to' => $to
         ];
     }
 
