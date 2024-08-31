@@ -21,6 +21,7 @@ class TaskController extends Controller
     {
         $parameters = [
             'search' => $request->get('search'),
+            'filters' => $request->get('filters'),
             'sort_field' => $request->get('sortField', 'id'),
             'sort_order' => $request->get('sortOrder', 'asc'),
             'page' => $request->get('page', 1),
@@ -38,11 +39,9 @@ class TaskController extends Controller
     public function getFilters(): JsonResponse
     {
         $priorities = Priority::select('name', 'id')->distinct()->pluck('name', 'id');
-        $test = Priority::select('name', 'id')->distinct()->pluck('name', 'id');
 
         return response()->json([
             'priorities' => $priorities,
-            'test' => $test
         ]);
     }
 }

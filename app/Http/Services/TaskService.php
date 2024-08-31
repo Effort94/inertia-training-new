@@ -15,37 +15,42 @@ class TaskService
      */
     public function fetchIndexDataForDatatable(array $parameters): array
     {
+        // Base Query
         $query = Task::query();
 
+        // Apply filters
         $query = $this->filterIndexData($query, $parameters);
 
-        // Format Data
+        // Apply pagination
         $tasks = $query->paginate($parameters['limit']);
 
-        // assign pagination
-        $last_page = $tasks->lastPage();
-        $previous_page = $tasks->previousPageUrl();
-        $next_page = $tasks->nextPageUrl();
-        $current_page = $tasks->currentPage();
-        $from = $tasks->firstItem();
-        $to =  $tasks->lastItem();
+        // assign pagination variables
+        $pagination = [
+            'last_page' => $tasks->lastPage(),
+            'previous_page' => $tasks->previousPageUrl(),
+            'next_page' => $tasks->nextPageUrl(),
+            'current_page' => $tasks->currentPage(),
+            'from' => $tasks->firstItem(),
+            'to' =>  $tasks->lastItem(),
+        ];
 
         // Work out total records and format data
         $total_records = $tasks->total();
 
-        $headers = $this->prepareDatatableHeaders();
+
+        // Format data for datatable
         $tasks = $this->formatIndexData($tasks->items());
 
         return [
-            'headers' => $headers,
+            'headers' => $this->prepareDatatableHeaders(),
             'data' => $tasks,
-            'last_page' => $last_page,
+            'last_page' => $pagination['last_page'],
             'total_records' => $total_records,
-            'previous_page' => $previous_page,
-            'next_page' => $next_page,
-            'current_page' => $current_page,
-            'from' => $from,
-            'to' => $to
+            'previous_page' =>  $pagination['previous_page'],
+            'next_page' => $pagination['next_page'],
+            'current_page' => $pagination['current_page'],
+            'from' => $pagination['from'],
+            'to' => $pagination['to']
         ];
     }
 
@@ -84,6 +89,15 @@ class TaskService
             return $query->where('title', 'like', '%' . $keyword . '%')
                 ->orWhere('description', 'like', '%' . $keyword . '%');
         });
+
+        //filters
+        if (isset($parameters['filters'])) {
+            foreach ($parameters['filters'] as $key => $value) {
+                if ($key === 'priorities') {
+                    $query->where('priority_id', $value);
+                }
+            }
+        }
 
         // Order
         if (isset($parameters['sort_field'])) {

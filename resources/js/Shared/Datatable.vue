@@ -5,7 +5,7 @@
             <div v-for="(options, filterType) in filters.filters" :key="filterType" class="mb-4">
                 <label :for="filterType" class="font-medium text-md dark:text-gray-400">{{ filterType }}</label>
                 <div class="mt-2">
-                    <select :id="filterType" @change="fetchTableData(filterType)" class="font-medium rounded-lg text-sm dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600">
+                    <select @change="filterDatatable($event, filterType)" class="font-medium rounded-lg text-sm dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600">
                         <option value="">- All -</option>
                         <option v-for="(label, value) in options" :key="value" :value="value">
                             {{ label }}
@@ -34,7 +34,7 @@
         </div>
     </div>
 
-        <!--        Table     -->
+    <!--        Table     -->
     <div class="flex-grow">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -52,15 +52,25 @@
                     </th>
                     <th v-for="header in tableHeaders" :key="header" @click="sortBy(header)" class="px-6 py-3">
                         {{ header }}
-                        <span v-if="filters.sortField === header" :class="{
-                          'fas fa-sort-up': filters.sortField && filters.sortOrder === 'desc',
-                          'fas fa-sort-down': filters.sortField && filters.sortOrder === 'asc'
+                        <span v-if="sort.sortField === header" :class="{
+                          'fas fa-sort-up': sort.sortField && sort.sortOrder === 'desc',
+                          'fas fa-sort-down': sort.sortField && sort.sortOrder === 'asc'
                         }"></span>
                     </th>
                     <th></th>
                 </tr>
                 </thead>
                 <tbody>
+                <!-- Display message when there are no items -->
+                <tr v-if="!tableData.length">
+                    <td colspan="100%" class="text-center text-xl h-24 border-t-2 border-b-2">
+                        <div class="flex items-center justify-center w-full h-full border-1">
+                            There are no items
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- Loop through table data -->
                 <tr v-for="data in tableData" :key="data.id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                     <td class="w-4 p-4">
                         <div class="flex items-center">
@@ -73,6 +83,7 @@
                         </div>
                     </td>
 
+                    <!-- Dynamic Data Columns -->
                     <td
                         v-for="value in Object.keys(data).filter(key => key !== 'id')"
                         :key="`${data.id}-${value}`"
@@ -89,9 +100,9 @@
             <div class="text-sm dark:text-gray-300">
                 <p>
                     Showing
-                    <span class="font-medium">{{ pagination.from }}</span>
+                    <span class="font-medium">{{ fromRecords }}</span>
                     to
-                    <span class="font-medium">{{ pagination.to }}</span>
+                    <span class="font-medium">{{ toRecords }}</span>
                     of
                     <span class="font-medium">{{ pagination.totalRecords }}</span>
                     results
@@ -170,6 +181,7 @@
 <script>
 import axios from "axios";
 import Button from "@/Shared/Form/Button.vue";
+
 export default {
     components: {
         Button,
@@ -194,10 +206,13 @@ export default {
             },
             filters: {
                 filters: {},
-                search: '',
+            },
+            appliedFilters: {},
+            sort: {
                 sortField: 'id',
                 sortOrder: 'asc',
             },
+            search: '',
             url: this.dataEndpoint,
         }
     },
@@ -210,10 +225,6 @@ export default {
         loadFilters() {
             axios.get(this.url + '/filters').then((response) => {
                 this.filters.filters = response.data;
-
-                Object.keys(this.filters).forEach(filterType => {
-                    this.filters.filterType = '';
-                });
             });
         },
         toggleSelectAll(event) {
@@ -226,9 +237,10 @@ export default {
         async fetchTableData() {
             const response = await axios.get(this.url, {
                 params: {
-                    search: this.filters.search,
-                    sortField: this.filters.sortField,
-                    sortOrder: this.filters.sortOrder,
+                    search: this.search,
+                    filters: this.appliedFilters,
+                    sortField: this.sort.sortField,
+                    sortOrder: this.sort.sortOrder,
                     page: this.pagination.page,
                     limit: this.pagination.rowsPerPage
                 },
@@ -248,8 +260,12 @@ export default {
             }
         },
         sortBy(field) {
-            this.filters.sortField = field;
-            this.filters.sortOrder = this.filters.sortOrder === 'asc' ? 'desc' : 'asc';
+            this.sort.sortField = field;
+            this.sort.sortOrder = this.sort.sortOrder === 'asc' ? 'desc' : 'asc';
+            this.fetchTableData();
+        },
+        filterDatatable(event, filterType) {
+            this.appliedFilters = {[filterType]: event.target.value}
             this.fetchTableData();
         },
         changePage(page) {
@@ -265,7 +281,13 @@ export default {
     },
     computed: {
         areAllSelected() {
-            return this.selectedIds.length === this.tableData.length;
+            return this.selectedIds.length === this.tableData.length;h
+        },
+        fromRecords() {
+            return this.pagination.from !== null ? this.pagination.from : 0;
+        },
+        toRecords() {
+            return this.pagination.to !== null ? this.pagination.to : 0;
         }
     },
     mounted() {
