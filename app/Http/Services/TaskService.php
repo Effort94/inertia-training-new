@@ -32,9 +32,12 @@ class TaskService
 
         // Work out total records and format data
         $total_records = $tasks->total();
+
+        $headers = $this->prepareDatatableHeaders();
         $tasks = $this->formatIndexData($tasks->items());
 
         return [
+            'headers' => $headers,
             'data' => $tasks,
             'last_page' => $last_page,
             'total_records' => $total_records,
@@ -57,6 +60,7 @@ class TaskService
         $data = [];
         foreach ($tasks as $task) {
             $data[] = [
+                'id' => $task->id,
                 'title' => $task->title,
                 'description' => $task->description,
                 'priority' => "<span class=\"{$task->priority->icon}\"></span>",
@@ -92,5 +96,14 @@ class TaskService
         }
 
         return $query;
+    }
+
+    public function prepareDatatableHeaders(): array
+    {
+        return [
+            'title',
+            'description',
+            'priority'
+        ];
     }
 }
