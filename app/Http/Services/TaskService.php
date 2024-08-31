@@ -90,10 +90,10 @@ class TaskService
                 ->orWhere('description', 'like', '%' . $keyword . '%');
         });
 
-        //filters
+        // filters
         if (isset($parameters['filters'])) {
             foreach ($parameters['filters'] as $key => $value) {
-                if ($key === 'priorities') {
+                if ($key === 'priorities' && !empty($value)) {
                     $query->where('priority_id', $value);
                 }
             }

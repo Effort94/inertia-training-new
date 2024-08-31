@@ -265,7 +265,9 @@ export default {
             this.fetchTableData();
         },
         filterDatatable(event, filterType) {
-            this.appliedFilters = {[filterType]: event.target.value}
+            if (event.target.value !== null) {
+                this.appliedFilters = {[filterType]: event.target.value}
+            }
             this.fetchTableData();
         },
         changePage(page) {
