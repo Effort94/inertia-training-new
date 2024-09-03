@@ -1,6 +1,6 @@
 <template>
     <div class="relative ">
-        <button class="z-10 relative flex items-center focus:outline-none select-none" @click="open = !open">
+        <button class="z-10 relative flex items-center select-none focus:outline-none" @click="open = !open">
             <slot name="button"></slot>
         </button>
 
@@ -9,7 +9,7 @@
 
         <!--dropdown menu-->
         <transition enter-active-class="transition-all duration-200 ease-out" leave-active-class="transition-all duration-750 ease-in" enter-class="opacity-0 scale-75" enter-to-class="opacity-100 scale-100" leave-class="opacity-100 scale-100" leave-to-class="opacity-0 scale-75">
-            <div class="absolute w-48 rounded py-1 px-2 text-sm mt-4 dark:bg-gray-800" :class="placement === 'right' ? 'right-0' : 'left-0'" v-if="open">
+            <div class="absolute w-48 rounded-lg py-1 px-2 text-sm dark:bg-gray-800 z-50" :class="placement === 'right' ? 'right-0' : 'left-0'" v-if="open">
                 <slot name="content"></slot>
             </div>
         </transition>
