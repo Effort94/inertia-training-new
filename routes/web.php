@@ -45,5 +45,5 @@ Route::middleware('auth')->group(function () {
         Route::get('/index-data/filters', [TaskController::class, 'getFilters'])->name('tasks.filters');
     });
 
-    Route::post('logout', [LoginController::class, 'logout'])->name('logout');
+    Route::get('logout', [LoginController::class, 'logout'])->name('logout');
 });

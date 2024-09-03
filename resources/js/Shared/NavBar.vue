@@ -40,8 +40,12 @@
                                 </NavLink>
                             </template>
                             <template v-slot:content>
-                                <NavLink class="flex rounded px-4 py-2 hover:bg-gray-700 dark:hover:bg-gray-600" :href="getUrl('tasks')">
-                                    Tasks
+                                <NavLink class="flex rounded px-4 py-2 hover:bg-gray-700 dark:hover:bg-gray-600" :href="getUrl('settings')">
+                                    Settings
+                                </NavLink>
+                                <hr>
+                                <NavLink class="flex rounded px-4 py-2 hover:bg-gray-700 dark:hover:bg-gray-600" :href="getUrl('logout')">
+                                    Logout
                                 </NavLink>
                             </template>
                         </Dropdown>
@@ -68,6 +72,7 @@
                 const pageUrls = {
                     settings: `/users/${this.$page.props.auth.user.id}/settings`,
                     tasks: `/tasks`,
+                    logout: '/logout'
                 };
                 return pageUrls[pageName] || '/';
             },
