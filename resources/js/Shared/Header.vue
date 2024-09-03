@@ -1,47 +1,21 @@
 <template>
     <div class="w-full text-white sticky top-0 z-50">
-        <nav class="bg-gray-800">
-            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                <div class="flex h-16 items-center justify-between">
-                    <div class="flex items-center">
-                        <div class="flex-shrink-0">
-                            <img class="h-8 w-8" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company">
-                        </div>
-                        <div class="hidden md:block">
-                            <div class="ml-10 flex items-baseline space-x-4">
-                                <NavBarLinks></NavBarLinks>
-                            </div>
-                        </div>
-                    </div>
-                    <div v-if="isAuthorised">
-                        <div class="ml-4 flex items-center md:ml-6">
-                            <AccountSettingsDropdown></AccountSettingsDropdown>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </nav>
+        <NavBarLinks></NavBarLinks>
     </div>
 </template>
 
 <script>
-import NavBarLinks from './NavBarLinks.vue'
-import AccountSettingsDropdown from '@/Components/Header/AccountSettingsDrodown.vue'
+import NavBarLinks from './NavBar.vue'
+import NavLink from "./NavLink.vue";
 export default {
     components: {
-        AccountSettingsDropdown,
+        NavLink,
         NavBarLinks
     },
 
     data() {
         return {
             active: false,
-        }
-    },
-
-    computed: {
-        isAuthorised() {
-            return this.$page.props.auth !== null
         }
     },
 }

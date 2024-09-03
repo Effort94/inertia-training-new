@@ -1,21 +1,36 @@
-<script>
-import { Link } from "@inertiajs/vue3";
-export default {
-    components: { Link },
-
-    props: {
-        active: Boolean,
-    }
-}
-
-</script>
-
 <template>
-    <Link :class="{'bg-gray-900 text-white rounded-md px-3' : active }">
+    <component :is="isLink ? 'Link' : 'span'" :href="isLink ? href : undefined" :class="linkClasses">
         <slot />
-    </Link>
+    </component>
 </template>
 
-<style scoped>
+<script>
+import {Link} from "@inertiajs/vue3";
 
-</style>
+export default {
+    components: { Link },
+    props: {
+        active: {
+            type: Boolean,
+            default: false,
+        },
+        isLink: {
+            type: Boolean,
+            default: true,
+        },
+        href: {
+            type: String,
+            default: '#',
+        },
+    },
+    computed: {
+        linkClasses() {
+            return {
+                'bg-gray-900 text-white rounded-md px-3 py-2': this.active,
+                'text-gray-600 dark:text-gray-300': !this.active && this.isLink,
+                'cursor-pointer': !this.isLink
+            };
+        }
+    }
+}
+</script>
