@@ -1,12 +1,10 @@
 <template>
     <Layout>
-        <div class="w-full bg-gray-100 flex items-center justify-center">
-            <div class="w-full dark:bg-gray-900 shadow-lg overflow-hidden px-2">
-                <div class="p-4">
-                    <Datatable
-                        data-endpoint="/tasks/index-data"
-                    ></Datatable>
-                </div>
+        <div class="w-full dark:bg-gray-900 shadow-lg overflow-hidden px-2">
+            <div class="p-4">
+                <Datatable
+                    data-endpoint="/tasks/index-data"
+                ></Datatable>
             </div>
         </div>
     </Layout>

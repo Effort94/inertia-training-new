@@ -8,10 +8,11 @@ export default {
 </script>
 
 <template>
-    <Header></Header>
-
-    <slot />
-
-    <Footer></Footer>
-
+    <div class="flex flex-col min-h-screen w-full bg-gray-900">
+        <Header></Header>
+        <div class="flex-1 flex w-full">
+            <slot></slot>
+        </div>
+        <Footer></Footer>
+    </div>
 </template>
