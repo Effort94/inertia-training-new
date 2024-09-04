@@ -1,41 +1,51 @@
 <template>
-    <div class="flex items-center justify-between flex-column py-4 dark:bg-gray-900">
-        <!--        Filters    -->
-        <div class="flex space-x-4 mb-4">
-            <div v-for="(options, filterType) in filters.filters" :key="filterType" class="mb-4">
-                <label :for="filterType" class="font-medium text-md dark:text-gray-400">{{ filterType }}</label>
-                <div class="mt-2">
-                    <select @change="filterDatatable($event, filterType)" class="font-medium rounded-lg text-sm dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600">
-                        <option value="">- All -</option>
-                        <option v-for="(label, value) in options" :key="value" :value="value">
-                            {{ label }}
-                        </option>
-                    </select>
+    <div class="flex flex-col py-4 dark:bg-gray-900">
+        <!-- Filters and Search -->
+        <div class="flex flex-wrap items-center justify-between gap-4 mb-2">
+            <!-- Filters -->
+            <div class="flex space-x-4">
+                <div v-for="(options, filterType) in filters.filters" :key="filterType">
+                    <label :for="filterType" class="font-medium text-md dark:text-gray-400">{{ filterType }}</label>
+                    <div>
+                        <select @change="filterDatatable($event, filterType)"
+                                class="font-medium rounded-lg text-sm dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600">
+                            <option value="">- All -</option>
+                            <option v-for="(label, value) in options" :key="value" :value="value">
+                                {{ label }}
+                            </option>
+                        </select>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!--        Search     -->
-        <label for="table-search" class="sr-only">Search</label>
-        <div class="relative">
-            <div class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
-                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                </svg>
+            <!-- Search -->
+            <div class="relative flex-grow max-w-sm">
+                <label for="table-search" class="sr-only">Search</label>
+                <div class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
+                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                    </svg>
+                </div>
+                <input
+                    type="text"
+                    id="table-search-users"
+                    class="block pt-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
+                    v-model="filters.search"
+                    @keyup="fetchTableData()"
+                    placeholder="Search for users"
+                >
             </div>
-            <input
-                type="text"
-                id="table-search-users"
-                class="block pt-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
-                v-model="filters.search"
-                @keyup="fetchTableData()"
-                placeholder="Search for users"
-            >
-        </div>
-    </div>
 
-    <!--        Table     -->
-    <div class="flex-grow">
+            <!-- Create Button -->
+            <div class="text-right">
+                <Button name="create" @click="create">Create</Button>
+            </div>
+        </div>
+
+        <!--        Table     -->
+        <div class="flex-grow">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
@@ -71,7 +81,8 @@
                 </tr>
 
                 <!-- Loop through table data -->
-                <tr v-for="data in tableData" :key="data.id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <tr v-for="data in tableData" :key="data.id"
+                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                     <td class="w-4 p-4">
                         <div class="flex items-center">
                             <input
@@ -94,85 +105,90 @@
                 </tbody>
             </table>
 
-        <!--    Pagination    -->
-        <div class="flex items-center justify-between px-4 py-3 sm:px-6 text-gray-500 dark:text-gray-400">
-            <!-- Left: Showing results info -->
-            <div class="text-sm dark:text-gray-300">
-                <p>
-                    Showing
-                    <span class="font-medium">{{ fromRecords }}</span>
-                    to
-                    <span class="font-medium">{{ toRecords }}</span>
-                    of
-                    <span class="font-medium">{{ pagination.totalRecords }}</span>
-                    results
-                </p>
-            </div>
+            <!--    Pagination    -->
+            <div class="flex items-center justify-between px-4 py-3 sm:px-6 text-gray-500 dark:text-gray-400">
+                <!-- Left: Showing results info -->
+                <div class="text-sm dark:text-gray-300">
+                    <p>
+                        Showing
+                        <span class="font-medium">{{ fromRecords }}</span>
+                        to
+                        <span class="font-medium">{{ toRecords }}</span>
+                        of
+                        <span class="font-medium">{{ pagination.totalRecords }}</span>
+                        results
+                    </p>
+                </div>
 
-            <!-- Center: Pagination Controls -->
-            <nav class="pagination-container flex justify-center" aria-label="Pagination">
-                <ul class="flex h-10 items-center space-x-2">
-                    <!-- Previous Button -->
-                    <li>
-                        <a
-                            href="#"
-                            @click.prevent="changePage(pagination.currentPage - 1)"
-                            :class="[
+                <!-- Center: Pagination Controls -->
+                <nav class="pagination-container flex justify-center" aria-label="Pagination">
+                    <ul class="flex h-10 items-center space-x-2">
+                        <!-- Previous Button -->
+                        <li>
+                            <a
+                                href="#"
+                                @click.prevent="changePage(pagination.currentPage - 1)"
+                                :class="[
                                           'flex items-center justify-center px-4 h-10 leading-tight border rounded-md',
                                           'text-gray-300 border-gray-300 hover:bg-gray-200 hover:text-gray-700',
                                           { 'cursor-not-allowed opacity-50': !pagination.prevPageUrl }
                                         ]"
-                            :aria-disabled="!pagination.prevPageUrl"
-                        >
-                            Previous
-                        </a>
-                    </li>
+                                :aria-disabled="!pagination.prevPageUrl"
+                            >
+                                Previous
+                            </a>
+                        </li>
 
-                    <!-- Page Numbers -->
-                    <li v-for="page in pagination.lastPage" :key="page">
-                        <a
-                            href="#"
-                            @click.prevent="changePage(page)"
-                            :class="[
+                        <!-- Page Numbers -->
+                        <li v-for="page in pagination.lastPage" :key="page">
+                            <a
+                                href="#"
+                                @click.prevent="changePage(page)"
+                                :class="[
                                       'flex items-center justify-center px-4 h-10 leading-tight border rounded-md',
                                       page === pagination.currentPage
                                         ? 'text-white bg-indigo-600 hover:bg-indigo-500'
                                         : 'text-gray-400 border-gray-300 hover:bg-gray-400 hover:text-gray-700 font-bold'
                                     ]"
-                        >
-                            {{ page }}
-                        </a>
-                    </li>
+                            >
+                                {{ page }}
+                            </a>
+                        </li>
 
-                    <!-- Next Button -->
-                    <li>
-                        <a
-                            href="#"
-                            @click.prevent="changePage(pagination.currentPage + 1)"
-                            :class="[
+                        <!-- Next Button -->
+                        <li>
+                            <a
+                                href="#"
+                                @click.prevent="changePage(pagination.currentPage + 1)"
+                                :class="[
                                           'flex items-center justify-center px-4 h-10 leading-tight border rounded-md',
                                           'text-gray-300 border-gray-300 hover:bg-gray-200 hover:text-gray-700',
                                           { 'cursor-not-allowed opacity-50': !pagination.nextPageUrl }
                                         ]"
-                            :aria-disabled="!pagination.nextPageUrl"
-                        >
-                            Next
-                        </a>
-                    </li>
-                </ul>
-            </nav>
+                                :aria-disabled="!pagination.nextPageUrl"
+                            >
+                                Next
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
 
-            <!-- Right: Rows per page selector -->
-            <div class="rows-per-page-selector flex items-center">
-                <label for="rowsPerPage" class="mr-2 text-sm text-gray-700 dark:text-gray-400">Rows per page:</label>
-                <select
-                    id="rowsPerPage"
-                    v-model="pagination.rowsPerPage"
-                    @change="changePage(1)"
-                    class="px-3 py-2 border border-gray-300 rounded-md text-sm bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400"
-                >
-                    <option v-for="option in pagination.rowsPerPageOptions" :key="option" :value="option">{{ option }}</option>
-                </select>
+                <!-- Right: Rows per page selector -->
+                <div class="rows-per-page-selector flex items-center">
+                    <label for="rowsPerPage" class="mr-2 text-sm text-gray-700 dark:text-gray-400">Rows per
+                        page:</label>
+                    <select
+                        id="rowsPerPage"
+                        v-model="pagination.rowsPerPage"
+                        @change="changePage(1)"
+                        class="px-3 py-2 border border-gray-300 rounded-md text-sm bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400"
+                    >
+                        <option v-for="option in pagination.rowsPerPageOptions" :key="option" :value="option">{{
+                                option
+                            }}
+                        </option>
+                    </select>
+                </div>
             </div>
         </div>
     </div>
@@ -188,10 +204,10 @@ export default {
     },
 
     props: {
-      dataEndpoint: {
-          type: String,
-          default: null,
-      }
+        dataEndpoint: {
+            type: String,
+            default: null,
+        }
     },
 
     data() {
@@ -230,7 +246,7 @@ export default {
         toggleSelectAll(event) {
             if (event.target.checked) {
                 this.selectedIds = this.tableData.map(data => data.id);
-            }     else {
+            } else {
                 this.selectedIds = [];
             }
         },
@@ -280,10 +296,13 @@ export default {
             // Fetch data
             this.fetchTableData(`${this.url}?page=${page}`)
         },
+        create() {
+            this.$emit('create');
+        }
     },
     computed: {
         areAllSelected() {
-            return this.selectedIds.length === this.tableData.length;h
+            return this.selectedIds.length === this.tableData.length;
         },
         fromRecords() {
             return this.pagination.from !== null ? this.pagination.from : 0;

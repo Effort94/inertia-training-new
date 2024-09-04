@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Tasks;
 
+use App\Http\Requests\TaskRequest;
 use App\Http\Services\TaskService;
 use App\Models\Priority;
 use Illuminate\Http\JsonResponse;
@@ -43,5 +44,13 @@ class TaskController extends Controller
         return response()->json([
             'priorities' => $priorities,
         ]);
+    }
+
+    /**
+     * @return false
+     */
+    public function create(TaskRequest $request): bool
+    {
+        return false;
     }
 }
