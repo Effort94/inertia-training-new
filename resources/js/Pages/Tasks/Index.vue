@@ -1,15 +1,22 @@
 <template>
     <Layout>
+        <div v-if="success.length > 0" class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md" role="alert">
+            <div class="flex">
+                {{ success }}
+            </div>
+        </div>
+
         <div class="w-full dark:bg-gray-900 shadow-lg overflow-hidden px-2">
             <div class="p-4">
                 <Datatable
+                    ref="datatable"
                     @create="createTask"
                     data-endpoint="/tasks/index-data"
                 ></Datatable>
             </div>
         </div>
 
-        <TaskModal :isVisible="createModalVisible" @close="closeModal"></TaskModal>
+        <TaskModal :isVisible="createModalVisible" @success="handleCreateTask" @close="closeModal"></TaskModal>
     </Layout>
 </template>
 
@@ -30,16 +37,27 @@ export default {
     data() {
         return {
             createModalVisible: false,
+            success: {},
         }
     },
 
     methods: {
+        handleCreateTask() {
+            this.fetchData();
+            this.closeModal();
+            this.success = this.$page.props.flash.success
+        },
+
         createTask() {
             this.createModalVisible = true
         },
 
         closeModal() {
             this.createModalVisible = false;
+        },
+
+        fetchData() {
+            this.$refs.datatable.fetchTableData();
         }
     }
 }

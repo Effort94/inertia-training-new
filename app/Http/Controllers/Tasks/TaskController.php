@@ -5,15 +5,18 @@ namespace App\Http\Controllers\Tasks;
 use App\Http\Requests\TaskRequest;
 use App\Http\Services\TaskService;
 use App\Models\Priority;
+use App\Models\Task;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Controller;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class TaskController extends Controller
 {
-    public function show(): Response
+    public function index(): Response
     {
         return Inertia::render('Tasks/Index');
     }
@@ -47,10 +50,23 @@ class TaskController extends Controller
     }
 
     /**
-     * @return false
+     * @param TaskRequest $request
+     * @return RedirectResponse
      */
-    public function create(TaskRequest $request): bool
+    public function store(TaskRequest $request): RedirectResponse
     {
-        return false;
+        try {
+            Task::create([
+                'title' => $request->get('title'),
+                'description' => $request->get('description'),
+                'status' => 'pending',
+                'priority_id' => Priority::where('id', $request->get('priority'))->firstOrFail()->id,
+                'user_id' => Auth::user()->id,
+            ]);
+
+            return redirect()->back()->with('success', 'Task created successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('errors', 'Failed to create task. Please try again.');
+        }
     }
 }

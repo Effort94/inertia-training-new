@@ -4,7 +4,7 @@
             <!-- Banner Section -->
             <div class="relative mb-12">
                 <div class="relative overflow-hidden rounded-lg">
-                    <img :src="profilePhotoUrl" alt="Warren Davey" class="w-full h-80 object-cover rounded-lg">
+                    <img :src="profilePhotoUrl" alt="Warren Davey" class="object-cover h-80 w-80 rounded-lg">
                 </div>
                 <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
                     <div class="text-white px-6">

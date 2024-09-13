@@ -312,6 +312,7 @@ export default {
         }
     },
     mounted() {
+        this.fetchTableData();
         this.loadFilters();
     }
 }

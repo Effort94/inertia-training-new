@@ -88,7 +88,15 @@ export default {
             this.$emit('close');
         },
         create() {
-            this.form.post('/tasks/create')
+            this.form.post('/tasks', {
+                onSuccess: () => {
+                    this.form.reset()
+                    this.$emit('success', this.$page.props.flash.success);
+                },
+                onError: (errors) => {
+                    this.$emit('error', this.$page.props.flash.error);
+                }
+            })
         },
     },
 };
