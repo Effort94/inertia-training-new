@@ -1,8 +1,8 @@
 <template>
     <Layout>
-        <div v-if="success.length > 0" class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md" role="alert">
+        <div v-if="flashMessage" :class="flashMessage.type">
             <div class="flex">
-                {{ success }}
+                {{ flashMessage.message }}
             </div>
         </div>
 
@@ -11,12 +11,37 @@
                 <Datatable
                     ref="datatable"
                     @create="createTask"
-                    data-endpoint="/tasks/index-data"
+                    @show="showTask"
+                    @edit="editTask"
+                    @delete="openDeleteModal"
+                    data-endpoint="/tasks"
+                    :asModalActions="true"
                 ></Datatable>
             </div>
         </div>
 
-        <TaskModal :isVisible="createModalVisible" @success="handleCreateTask" @close="closeModal"></TaskModal>
+        <TaskModal
+            :isVisible="showModal"
+            :isEditable="isEditable"
+            :task="task"
+            @success="handleCreateTask"
+            @close="closeModal"
+            @refresh="fetchData"
+        ></TaskModal>
+
+        <Modal v-show="showDeleteModal" @close="showDeleteModal = false">
+            <template v-slot:header>
+                Delete Task
+            </template>
+
+            <template v-slot:body>
+                <p> Are you sure you wish to delete the task? </p>
+            </template>
+
+            <template v-slot:footer>
+                <Button name="Delete" class="btn btn-danger" @click="deleteTask(selectedTask)"> Delete</Button>
+            </template>
+        </Modal>
     </Layout>
 </template>
 
@@ -25,6 +50,8 @@ import Layout from "@/Shared/Layout.vue"
 import Button from "@/Shared/Form/Button.vue";
 import Datatable from "@/Shared/Datatable.vue";
 import TaskModal from "@/Pages/Tasks/Components/CreateModal.vue";
+import Modal from "@/Shared/Modal.vue";
+import axios from "axios";
 
 export default {
     components: {
@@ -32,12 +59,21 @@ export default {
         Button,
         Datatable,
         TaskModal,
+        Modal,
+    },
+
+    props: {
+        flash: Object
     },
 
     data() {
         return {
-            createModalVisible: false,
+            showModal: false,
+            showDeleteModal: false,
+            isEditable: false,
+            selectedTask: null,
             success: {},
+            task: {},
         }
     },
 
@@ -49,15 +85,80 @@ export default {
         },
 
         createTask() {
-            this.createModalVisible = true
+            this.showModal = true;
+            this.isEditable = true;
         },
-
+        openDeleteModal(taskId) {
+            this.fetchTask(taskId);
+            this.selectedTask = taskId;
+            this.showDeleteModal = true
+        },
         closeModal() {
-            this.createModalVisible = false;
+            this.showModal = false;
+            this.task = {};
         },
 
         fetchData() {
             this.$refs.datatable.fetchTableData();
+        },
+
+        showTask(taskId)
+        {
+            this.fetchTask(taskId);
+            this.showModal = true;
+        },
+
+        editTask(taskId) {
+            this.fetchTask(taskId);
+            this.showModal = true;
+            this.isEditable = true;
+        },
+
+        async deleteTask() {
+            if (this.selectedTask) {
+                this.loading = true;
+                try {
+                    await this.$inertia.delete(`/tasks/${this.selectedTask}`);
+                    this.fetchData();
+                    this.success = this.$page.props.flash.success || '';
+                } catch (error) {
+                    console.error('Failed to delete task', error);
+                    this.error = this.$page.props.flash.error || 'Failed to delete task. Please try again.';
+                } finally {
+                    this.loading = false;
+                    this.showDeleteModal = false;
+                }
+            }
+        },
+        async fetchTask(taskId) {
+            try {
+                // Fetch the task details from the server
+                const response = await axios.get(`/tasks/${taskId}`);
+
+                // Assign the task details to the taskDetails data
+                this.task = response.data.task;
+            } catch (error) {
+                console.error("Failed to fetch task details:", error);
+            }
+        }
+    },
+    computed: {
+        flashMessage() {
+            if (this.flash) {
+                if (this.flash.success) {
+                    return {
+                        type: 'success',
+                        message: this.flash.success,
+                    };
+                }
+                if (this.flash.error) {
+                    return {
+                        type: 'error',
+                        message: this.flash.error,
+                    };
+                }
+            }
+            return null;
         }
     }
 }

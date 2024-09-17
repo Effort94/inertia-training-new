@@ -101,6 +101,35 @@
                         class="px-6 py-4"
                         v-html="data[value]">
                     </td>
+
+                    <!-- Action Menu Column -->
+                    <td class="px-6 py-4 text-right">
+                        <div class="relative inline-block text-left">
+                            <!-- Action Menu Toggle Button -->
+                            <button @click="toggleActionMenu(data.id)" type="button" class="inline-flex items-center p-2 text-sm font-medium text-gray-400 bg-gray-800 rounded-md shadow-sm hover:bg-gray-700 dark:text-gray-300 dark:bg-gray-900 dark:hover:bg-gray-700">
+                                <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 12h.01M12 12h.01M18 12h.01" />
+                                </svg>
+                            </button>
+
+                            <!-- Dropdown Menu -->
+                            <div v-if="activeActionMenuId === data.id" class="origin-top-right absolute right-0 mt-2 w-56 z-50 rounded-md shadow-lg bg-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-gray-900 dark:ring-gray-700">
+                                <div class="p-1">
+                                    <a @click="action('view', data.id)" class="flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 cursor-pointer dark:hover:bg-gray-700">
+                                        <i class="far far fa-eye mr-2"></i> View
+                                    </a>
+                                    <hr class="my-1 border-gray-600 dark:border-gray-700">
+                                    <a @click="action('edit', data.id)" class="flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 cursor-pointer dark:hover:bg-gray-700">
+                                        <i class="fa far fa-edit mr-2"></i> Edit
+                                    </a>
+                                    <hr class="my-1 border-gray-600 dark:border-gray-700">
+                                    <a @click="action('delete', data.id)" class="flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 cursor-pointer dark:hover:bg-gray-700">
+                                        <i class="fa far fa-trash mr-2"></i> Delete
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
                 </tr>
                 </tbody>
             </table>
@@ -229,7 +258,9 @@ export default {
                 sortOrder: 'asc',
             },
             search: '',
-            url: this.dataEndpoint,
+            url: this.dataEndpoint + '/index-data',
+            activeActionMenuId: null,
+            asModalActions: false
         }
     },
 
@@ -275,6 +306,19 @@ export default {
                 to: response.data.to
             }
         },
+        async handleAction(action, id) {
+            switch (action) {
+                case 'view':
+                    this.$emit('show', id);
+                    break;
+                case 'edit':
+                    this.$emit('edit', id);
+                    break;
+                case 'delete':
+                    this.$emit('delete', id);
+                    break;
+            }
+        },
         sortBy(field) {
             this.sort.sortField = field;
             this.sort.sortOrder = this.sort.sortOrder === 'asc' ? 'desc' : 'asc';
@@ -298,7 +342,19 @@ export default {
         },
         create() {
             this.$emit('create');
-        }
+        },
+        toggleActionMenu(id) {
+            this.activeActionMenuId = this.activeActionMenuId === id ? null : id;
+        },
+        action(action, id) {
+            this.activeActionMenuId = null;
+
+            if (this.asModalActions) {
+                this.$emit(action)
+            } else {
+                this.handleAction(action, id);
+            }
+        },
     },
     computed: {
         areAllSelected() {

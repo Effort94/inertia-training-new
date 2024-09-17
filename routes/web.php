@@ -44,6 +44,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/index-data', [TaskController::class, 'indexData'])->name('tasks.data');
         Route::get('/index-data/filters', [TaskController::class, 'getFilters'])->name('tasks.filters');
         Route::post('/', [TaskController::class, 'store'])->name('tasks.store');
+        Route::get('/{task}', [TaskController::class, 'show'])->name('tasks.show');
+        Route::get('/{task}/edit', [TaskController::class, 'edit'])->name('task.edit');
+        Route::put('/{task}', [TaskController::class, 'update'])->name('task.update');
+        Route::delete('/{task}', [TaskController::class, 'destroy'])->name('tasks.destroy');
     });
 
     Route::get('logout', [LoginController::class, 'logout'])->name('logout');
