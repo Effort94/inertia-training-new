@@ -44,7 +44,7 @@
             </div>
         </div>
 
-        <!--        Table     -->
+        <!--   Table     -->
         <div class="flex-grow">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -106,14 +106,19 @@
                     <td class="px-6 py-4 text-right">
                         <div class="relative inline-block text-left">
                             <!-- Action Menu Toggle Button -->
-                            <button @click="toggleActionMenu(data.id)" type="button" class="inline-flex items-center p-2 text-sm font-medium text-gray-400 bg-gray-800 rounded-md shadow-sm hover:bg-gray-700 dark:text-gray-300 dark:bg-gray-900 dark:hover:bg-gray-700">
+                            <button
+                                @click="toggleActionMenu(data.id)"
+                                type="button"
+                                class="inline-flex items-center p-2 text-sm font-medium text-gray-400 bg-gray-800 rounded-md shadow-sm hover:bg-gray-700 dark:text-gray-300 dark:bg-gray-900 dark:hover:bg-gray-700"
+                                @click.stop
+                            >
                                 <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 12h.01M12 12h.01M18 12h.01" />
                                 </svg>
                             </button>
 
                             <!-- Dropdown Menu -->
-                            <div v-if="activeActionMenuId === data.id" class="origin-top-right absolute right-0 mt-2 w-56 z-50 rounded-md shadow-lg bg-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-gray-900 dark:ring-gray-700">
+                            <div v-if="activeActionMenuId === data.id" class="absolute right-full ml-2 top-0 w-56 z-50 rounded-md shadow-lg bg-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-gray-900 dark:ring-gray-700 transition transform ease-out duration-300 origin-left">
                                 <div class="p-1">
                                     <a @click="action('view', data.id)" class="flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 cursor-pointer dark:hover:bg-gray-700">
                                         <i class="far far fa-eye mr-2"></i> View
@@ -345,6 +350,11 @@ export default {
         },
         toggleActionMenu(id) {
             this.activeActionMenuId = this.activeActionMenuId === id ? null : id;
+            if (this.activeActionMenuId) {
+                document.addEventListener('click', this.handleOutsideClick);
+            } else {
+                document.removeEventListener('click', this.handleOutsideClick);
+            }
         },
         action(action, id) {
             this.activeActionMenuId = null;
@@ -353,6 +363,15 @@ export default {
                 this.$emit(action)
             } else {
                 this.handleAction(action, id);
+            }
+        },
+        handleOutsideClick(event) {
+            const dropdown = this.$el.querySelector(
+                '.absolute.right-full'
+            );
+            if (dropdown && !dropdown.contains(event.target)) {
+                this.activeActionMenuId = null;
+                document.removeEventListener('click', this.handleOutsideClick);
             }
         },
     },
