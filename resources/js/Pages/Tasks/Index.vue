@@ -23,7 +23,7 @@
         <TaskModal
             :isVisible="showModal"
             :isEditable="isEditable"
-            :task="task"
+            :task="selectedTask"
             @success="handleCreateTask"
             @close="closeModal"
             @refresh="fetchData"
@@ -73,7 +73,6 @@ export default {
             isEditable: false,
             selectedTask: null,
             success: {},
-            task: {},
         }
     },
 
@@ -89,13 +88,13 @@ export default {
             this.isEditable = true;
         },
         openDeleteModal(taskId) {
-            this.fetchTask(taskId);
-            this.selectedTask = taskId;
-            this.showDeleteModal = true
+            this.fetchTask(taskId).then(() => {
+                this.showDeleteModal = true
+            });
         },
         closeModal() {
             this.showModal = false;
-            this.task = {};
+            this.selectedTask = {};
         },
 
         fetchData() {
@@ -104,14 +103,16 @@ export default {
 
         showTask(taskId)
         {
-            this.fetchTask(taskId);
-            this.showModal = true;
+            this.fetchTask(taskId).then(() => {
+                this.showModal = true;
+            });
         },
 
         editTask(taskId) {
-            this.fetchTask(taskId);
-            this.showModal = true;
-            this.isEditable = true;
+            this.fetchTask(taskId).then(() => {
+                this.showModal = true;
+                this.isEditable = true;
+            });
         },
 
         async deleteTask() {
@@ -136,7 +137,7 @@ export default {
                 const response = await axios.get(`/tasks/${taskId}`);
 
                 // Assign the task details to the taskDetails data
-                this.task = response.data.task;
+                this.selectedTask = response.data.task;
             } catch (error) {
                 console.error("Failed to fetch task details:", error);
             }

@@ -107,7 +107,7 @@
                         <div class="relative inline-block text-left">
                             <!-- Action Menu Toggle Button -->
                             <button
-                                @click="toggleActionMenu(data.id)"
+                                @click="showActionMenu(data.id)"
                                 type="button"
                                 class="inline-flex items-center p-2 text-sm font-medium text-gray-400 bg-gray-800 rounded-md shadow-sm hover:bg-gray-700 dark:text-gray-300 dark:bg-gray-900 dark:hover:bg-gray-700"
                                 @click.stop
@@ -118,7 +118,7 @@
                             </button>
 
                             <!-- Dropdown Menu -->
-                            <div v-if="activeActionMenuId === data.id" class="absolute right-full ml-2 top-0 w-56 z-50 rounded-md shadow-lg bg-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-gray-900 dark:ring-gray-700 transition transform ease-out duration-300 origin-left">
+                            <div v-show="openActionMenu" v-if="activeActionMenuId === data.id" class="absolute right-full ml-2 top-0 w-56 z-50 rounded-md shadow-lg bg-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-gray-900 dark:ring-gray-700 transition transform ease-out duration-300 origin-left">
                                 <div class="p-1">
                                     <a @click="action('view', data.id)" class="flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 cursor-pointer dark:hover:bg-gray-700">
                                         <i class="far far fa-eye mr-2"></i> View
@@ -265,7 +265,8 @@ export default {
             search: '',
             url: this.dataEndpoint + '/index-data',
             activeActionMenuId: null,
-            asModalActions: false
+            asModalActions: false,
+            openActionMenu: false
         }
     },
 
@@ -312,6 +313,8 @@ export default {
             }
         },
         async handleAction(action, id) {
+            this.closeActionMenu()
+
             switch (action) {
                 case 'view':
                     this.$emit('show', id);
@@ -348,13 +351,17 @@ export default {
         create() {
             this.$emit('create');
         },
-        toggleActionMenu(id) {
+        showActionMenu(id) {
+            this.openActionMenu = true;
             this.activeActionMenuId = this.activeActionMenuId === id ? null : id;
             if (this.activeActionMenuId) {
                 document.addEventListener('click', this.handleOutsideClick);
             } else {
                 document.removeEventListener('click', this.handleOutsideClick);
             }
+        },
+        closeActionMenu() {
+            this.openActionMenu = false;
         },
         action(action, id) {
             this.activeActionMenuId = null;
