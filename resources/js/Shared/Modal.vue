@@ -1,6 +1,6 @@
 <template>
     <!-- Modal Background Overlay -->
-    <div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+    <div ref="modalOverlay" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50" @click="handleOverlayClick">
         <!-- Modal Container -->
         <div class="rounded-lg w-full max-w-lg p-6 dark:bg-gray-800">
 
@@ -56,6 +56,14 @@ export default {
         close() {
             this.$emit('close');
         },
+        /**
+         * Handle clicks on the overlay
+         */
+        handleOverlayClick(event) {
+            if (event.target === this.$refs.modalOverlay) {
+                this.close();
+            }
+        }
     },
 };
 </script>
