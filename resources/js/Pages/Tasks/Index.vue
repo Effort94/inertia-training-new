@@ -20,7 +20,7 @@
             </div>
         </div>
 
-        <TaskModal
+        <TaskModal v-if="showModal"
             :isVisible="showModal"
             :isEditable="isEditable"
             :task="selectedTask"
@@ -35,11 +35,13 @@
             </template>
 
             <template v-slot:body>
-                <p> Are you sure you wish to delete the task? </p>
+                <div class="p-4 bg-gray-800 text-gray-200">
+                    <p>Are you sure you wish to delete the task?</p>
+                </div>
             </template>
 
             <template v-slot:footer>
-                <Button name="Delete" class="btn btn-danger" @click="deleteTask(selectedTask)"> Delete</Button>
+                <Button name="Delete" class="px-4 py-2 text-sm font-medium text-white bg-red-700 rounded-lg" @click="deleteTask(selectedTask)"> Delete</Button>
             </template>
         </Modal>
     </Layout>
@@ -94,6 +96,7 @@ export default {
         },
         closeModal() {
             this.showModal = false;
+            this.isEditable = false;
             this.selectedTask = {};
         },
 
