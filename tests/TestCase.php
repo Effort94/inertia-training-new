@@ -18,6 +18,14 @@ abstract class TestCase extends BaseTestCase
 
         // Run Migrations
         Artisan::call('migrate', ['--env' => 'testing']);
+
+        // Run Seeders
+        Artisan::call('db:seed', [
+            '--class' => 'Database\Seeders\PrioritySeeder',
+            '--env' => 'testing',
+        ]);
+
+        $this->beAuthenticatedUser();
     }
 
     public function beAuthenticatedUser(): User

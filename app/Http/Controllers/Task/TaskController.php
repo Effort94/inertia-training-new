@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Tasks;
+namespace App\Http\Controllers\Task;
 
 use App\Http\Requests\TaskRequest;
 use App\Http\Services\TaskService;
@@ -16,11 +16,24 @@ use Inertia\Response;
 
 class TaskController extends Controller
 {
+    /**
+     * Return Task Index view.
+     *
+     * @return Response
+     * @codeCoverageIgnore Don't test views.
+     */
     public function index(): Response
     {
         return Inertia::render('Tasks/Index');
     }
 
+    /**
+     * Fetch data required for tasks datatable.
+     *
+     * @param Request $request
+     * @return array[]
+     * @codeCoverageIgnore Don't test helpers. Tested in the service test.
+     */
     public function indexData(Request $request)
     {
         $parameters = [
@@ -54,6 +67,7 @@ class TaskController extends Controller
      *
      * @param Task $task
      * @return JsonResponse
+     * @codeCoverageIgnore Don't test views.
      */
     public function show(Task $task): JsonResponse
     {

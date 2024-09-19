@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Settings;
+namespace App\Http\Controllers\Setting;
 
 use App\Http\Requests\AccountSettingsRequest;
 use App\Models\User;

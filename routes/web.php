@@ -2,8 +2,8 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\Settings\SettingsController;
-use App\Http\Controllers\Tasks\TaskController;
+use App\Http\Controllers\Setting\SettingsController;
+use App\Http\Controllers\Task\TaskController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
