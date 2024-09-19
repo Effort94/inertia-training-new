@@ -256,13 +256,13 @@ export default {
             },
             filters: {
                 filters: {},
+                search: ''
             },
             appliedFilters: {},
             sort: {
                 sortField: 'id',
                 sortOrder: 'asc',
             },
-            search: '',
             url: this.dataEndpoint + '/index-data',
             activeActionMenuId: null,
             asModalActions: false,
@@ -290,7 +290,7 @@ export default {
         async fetchTableData() {
             const response = await axios.get(this.url, {
                 params: {
-                    search: this.search,
+                    search: this.filters.search,
                     filters: this.appliedFilters,
                     sortField: this.sort.sortField,
                     sortOrder: this.sort.sortOrder,
