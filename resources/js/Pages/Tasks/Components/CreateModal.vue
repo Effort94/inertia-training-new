@@ -18,26 +18,23 @@
             </div>
         </template>
         <template v-slot:footer>
-            <Button v-if="Object.keys(this.task).length === 0"
+            <Button v-if="this.task === null"
                     name="Create"
                     @click="create"
-                    class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700"
+                    class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 dark:text-gray-200"
             >
-                Create
             </Button>
-            <Button v-if="!editable && Object.keys(this.task).length > 0"
+            <Button v-if="!editable && this.task !== null"
                     name="Edit"
                     @click="edit"
-                    class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700"
+                    class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 dark:text-gray-200"
             >
-                Create
             </Button>
-            <Button v-if="editable && Object.keys(this.task).length > 0"
+            <Button v-if="editable && this.task !== null"
                     name="Save"
                     @click="update"
-                    class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700"
+                    class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 dark:text-gray-200"
             >
-                Create
             </Button>
         </template>
     </Modal>
@@ -73,9 +70,9 @@ export default {
     data() {
         return {
             form: useForm({
-                title: this.task.title,
-                description: this.task.description,
-                priority: this.task.priority_id,
+                title: this.task !== null ? this.task.title : '',
+                description: this.task !== null ? this.task.description : '',
+                priority: this.task !== null ? this.task.priority_id : 0,
             }),
         }
     },
@@ -113,7 +110,7 @@ export default {
     computed: {
         modalHeaderText () {
             // Check if task exists
-            if (Object.keys(this.task).length === 0) {
+            if (this.task === null) {
                 return 'Create Task';
             }
 

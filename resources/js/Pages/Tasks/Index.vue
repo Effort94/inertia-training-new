@@ -29,7 +29,7 @@
             @refresh="fetchData"
         ></TaskModal>
 
-        <Modal v-show="showDeleteModal" @close="showDeleteModal = false">
+        <Modal v-show="showDeleteModal" @close="closeModal">
             <template v-slot:header>
                 Delete Task
             </template>
@@ -41,7 +41,12 @@
             </template>
 
             <template v-slot:footer>
-                <Button name="Delete" class="px-4 py-2 text-sm font-medium text-white bg-red-700 rounded-lg" @click="deleteTask(selectedTask)"> Delete</Button>
+                <Button
+                    name="Delete"
+                    class="px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-lg
+                    dark:bg-red-700 dark:hover:bg-red-900"
+                    @click="deleteTask(selectedTask)">
+                </Button>
             </template>
         </Modal>
     </Layout>
@@ -96,8 +101,9 @@ export default {
         },
         closeModal() {
             this.showModal = false;
+            this.showDeleteModal = false;
             this.isEditable = false;
-            this.selectedTask = {};
+            this.selectedTask = null;
         },
 
         fetchData() {

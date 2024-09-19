@@ -9,7 +9,7 @@
                 :disabled="disabled"
                 @change="$emit('update:modelValue', Number($event.target.value))"
             >
-                <option value="" disabled>Please Select</option>
+                <option value="0" disabled>Please Select</option>
                 <option value="1">Low</option>
                 <option value="2">Medium</option>
                 <option value="3">High</option>
