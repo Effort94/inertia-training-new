@@ -1,9 +1,11 @@
 <?php
 
-namespace Feature\Task;
+namespace Task;
 
+use App\Http\Services\TaskService;
 use App\Models\Priority;
 use App\Models\Task;
+use Mockery;
 use Str;
 use Tests\TestCase;
 
@@ -56,13 +58,20 @@ class TaskControllerTest extends Testcase
         $this->assertEquals($expected['title'], $actual->title);
         $this->assertEquals($expected['description'], $actual->description);
         $this->assertEquals($expected['priority'], $actual->priority->id);
+
+        $this->app->instance(TaskService::class, Mockery::mock(TaskService::class, function ($mock) {
+            $mock->shouldReceive('save')->andThrow(new \Exception('Error occurred'));
+        }));
+
+        $this->post($this->routes['store'], $this->params)
+            ->assertRedirect()
+            ->assertSessionHas('error', 'Failed to create task. Please try again.');
     }
 
     public function testUpdate()
     {
         // Store task
-        $this->post($this->routes['store'], $this->params)->assertSessionDoesntHaveErrors();
-        $task = Task::inRandomOrder()->first();
+        $task = Task::factory()->create();
 
         // New data to update task with
         $params = [
@@ -79,6 +88,14 @@ class TaskControllerTest extends Testcase
         $this->assertEquals($params['title'], $task->title);
         $this->assertEquals($params['description'], $task->description);
         $this->assertEquals($params['priority'], $task->priority->id);
+
+        $this->app->instance(TaskService::class, Mockery::mock(TaskService::class, function ($mock) {
+            $mock->shouldReceive('save')->andThrow(new \Exception('Error occurred'));
+        }));
+
+        $this->put($url, $params)
+            ->assertRedirect()
+            ->assertSessionHas('error', 'Failed to update task. Please try again.');
     }
 
     public function testDestroy()

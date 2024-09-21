@@ -3,6 +3,7 @@
 namespace App\Http\Services;
 
 use App\Models\Task;
+use Auth;
 use Illuminate\Database\Eloquent\Builder;
 
 class TaskService
@@ -119,5 +120,28 @@ class TaskService
             'description',
             'priority'
         ];
+    }
+
+    /**
+     * Attempt to create / update a Task.
+     *
+     * @param array $data
+     * @param ?Task $task
+     * @return bool
+     */
+    public function save(array $data, ?Task $task = null): bool
+    {
+        $attributes = [
+            'title' => $data['title'],
+            'description' => $data['description'],
+            'priority_id' => $data['priority'],
+            'user_id' => Auth::user()->id,
+        ];
+
+        $conditions = isset($task) ? ['id' => $task->id] : [];
+
+        Task::query()->updateOrCreate($conditions, $attributes);
+
+        return true;
     }
 }
