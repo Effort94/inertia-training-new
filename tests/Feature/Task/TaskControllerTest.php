@@ -4,6 +4,7 @@ namespace Feature\Task;
 
 use App\Models\Priority;
 use App\Models\Task;
+use Str;
 use Tests\TestCase;
 
 class TaskControllerTest extends Testcase
@@ -57,6 +58,43 @@ class TaskControllerTest extends Testcase
         $this->assertEquals($expected['priority'], $actual->priority->id);
     }
 
+    public function testUpdate()
+    {
+        // Store task
+        $this->post($this->routes['store'], $this->params)->assertSessionDoesntHaveErrors();
+        $task = Task::inRandomOrder()->first();
+
+        // New data to update task with
+        $params = [
+            'title' => $this->faker->title,
+            'description' => $this->faker->text,
+            'priority' => Priority::inRandomOrder()->where('id', '!=', $task->priority->id)->first()->id,
+        ];
+
+        $url = "/tasks/{$task->id}";
+        $this->put($url, $params)->assertSessionDoesntHaveErrors();
+        $task->refresh();
+
+        // Assert Task has updated
+        $this->assertEquals($params['title'], $task->title);
+        $this->assertEquals($params['description'], $task->description);
+        $this->assertEquals($params['priority'], $task->priority->id);
+    }
+
+    public function testDestroy()
+    {
+        // Store task
+        $this->post($this->routes['store'], $this->params)->assertSessionDoesntHaveErrors();
+        $task = Task::inRandomOrder()->first();
+
+        // Destroy task
+        $url = "/tasks/{$task->id}";
+        $this->delete($url)->assertSessionDoesntHaveErrors();
+
+        // Check task has been deleted
+        $this->assertEmpty(Task::where("id", $task->id)->get());
+    }
+
     // Validation
 
     public function testValidateRequired()
@@ -71,4 +109,39 @@ class TaskControllerTest extends Testcase
         }
     }
 
+    public function testValidateString()
+    {
+        $fields = ['title', 'description'];
+
+        foreach ($fields as $field) {
+            $this->params[$field] = rand(1, 10);
+
+            $this->json('post', $this->routes['store'], $this->params)
+                ->assertJsonFragment([$field => ["The {$field} field must be a string."]]);
+        }
+    }
+
+    public function testValidateMax()
+    {
+        $fields = ['title', 'description'];
+
+        foreach ($fields as $field) {
+            $this->params[$field] = Str::random(256);
+
+            $this->json('post', $this->routes['store'], $this->params)
+                ->assertJsonFragment([$field => ["The {$field} field must not be greater than 255 characters."]]);
+        }
+    }
+
+    public function testValidateRuleIn()
+    {
+        $fields = ['priority'];
+
+        foreach($fields as $field) {
+            $this->params[$field] = Str::random();
+
+            $this->json('post', $this->routes['store'], $this->params)
+                ->assertJsonFragment([$field => ["The selected {$field} is invalid."]]);
+        }
+    }
 }

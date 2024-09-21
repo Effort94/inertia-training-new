@@ -34,7 +34,7 @@ class TaskController extends Controller
      * @return array[]
      * @codeCoverageIgnore Don't test helpers. Tested in the service test.
      */
-    public function indexData(Request $request)
+    public function indexData(Request $request): array
     {
         $parameters = [
             'search' => $request->get('search'),

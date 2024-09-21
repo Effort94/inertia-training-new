@@ -26,7 +26,7 @@ class TaskRequest extends FormRequest
         return [
             'title' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string', 'max:255'],
-            'priority' => ['required', 'integer', Rule::in(Priority::all()->pluck('id'))],
+            'priority' => ['required', Rule::in(Priority::all()->pluck('id'))],
         ];
     }
 }
