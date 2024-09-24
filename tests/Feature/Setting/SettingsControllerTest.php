@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\Feature;
+namespace Setting;
 
 use Tests\TestCase;
 
-class UserControllerTest extends TestCase
+class SettingsControllerTest extends TestCase
 {
     public function setUp(): void
     {
@@ -23,7 +23,7 @@ class UserControllerTest extends TestCase
         $old_user_details = $this->user;
 
         // Update Email Address
-        $this->post("users/{$this->user->id}/settings/store", [
+        $response = $this->post("users/{$this->user->id}/settings/update", [
             'email' => $this->faker->email,
         ]);
 
@@ -33,7 +33,7 @@ class UserControllerTest extends TestCase
 
         // Update the Password
         $password = $this->faker->password(8);
-        $this->post("users/{$this->user->id}/settings/store", [
+        $this->post("users/{$this->user->id}/settings/update", [
             'email' => $this->faker->email,
             'password' => $password,
             'password_confirmation' => $password,

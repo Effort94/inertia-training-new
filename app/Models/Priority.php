@@ -10,6 +10,12 @@ class Priority extends Model
 {
     use HasFactory;
 
+    /**
+     *  A priority belongs to many tasks.
+     *
+     * @codeCoverageIgnore Don't test relationships
+     * @return BelongsToMany
+     */
     public function task(): BelongsToMany
     {
         return $this->belongsToMany(Task::class);

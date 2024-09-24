@@ -12,6 +12,12 @@ class Task extends Model
 
     protected $guarded = ['id'];
 
+    /**
+     * A task has one priority.
+     *
+     * @codeCoverageIgnore Don't test relationships
+     * @return BelongsTo
+     */
     public function priority(): BelongsTo
     {
         return $this->belongsTo(Priority::class);
