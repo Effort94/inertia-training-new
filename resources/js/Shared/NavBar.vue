@@ -18,6 +18,9 @@
                                     </NavLink>
                                 </template>
                                 <template v-slot:content>
+                                    <NavLink class="flex rounded px-4 py-2 hover:bg-gray-700 dark:hover:bg-gray-600" :href="getUrl('login')">
+                                        Authentication
+                                    </NavLink>
                                     <NavLink class="flex rounded px-4 py-2 hover:bg-gray-700 dark:hover:bg-gray-600" :href="getUrl('tasks')">
                                         Tasks
                                     </NavLink>
@@ -70,10 +73,14 @@
         methods: {
             getUrl(pageName) {
                 const pageUrls = {
-                    settings: `/users/${this.$page.props.auth.user.id}/settings`,
+                    login: `/login`,
                     tasks: `/tasks`,
                     logout: '/logout'
                 };
+
+                if (this.isAuthorised) {
+                    pageUrls.settings = `/users/${this.$page.props.auth.user.id}/settings`
+                }
                 return pageUrls[pageName] || '/';
             },
         },

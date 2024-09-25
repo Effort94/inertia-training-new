@@ -38,17 +38,7 @@
                     </ul>
                 </div>
             </div>
-
-            <!-- Projects Section -->
-            <div class="mb-12">
-                <div class="text-white dark:bg-gray-800 p-8 rounded-lg shadow-lg">
-                    <h1 class="text-3xl font-bold mb-6">Projects</h1>
-                    <!-- Project content goes here -->
-                </div>
-            </div>
-
         </div>
-
     </Layout>
 </template>
 

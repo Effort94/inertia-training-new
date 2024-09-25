@@ -15,6 +15,9 @@ class SettingsController extends Controller
 {
     /**
      * Redirect user to 'Settings' view
+     *
+     * @codeCoverageIgnore Don't test views.
+     * @return Response
      */
     public function show(Request $request, User $user): Response
     {
@@ -23,6 +26,8 @@ class SettingsController extends Controller
 
     /**
      * Update settings
+     *
+     * @return RedirectResponse\
      */
     public function update(AccountSettingsRequest $request, User $user): RedirectResponse
     {

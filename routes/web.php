@@ -18,20 +18,21 @@ use Inertia\Inertia;
 |
 */
 
-// Non Auth Routes
+// Authentication Routes
 Route::get('login', [LoginController::class, 'show'])->name('login.show');
 Route::post('login', [LoginController::class, 'store'])->name('login.store');
 Route::get('register', [RegisterController::class, 'show'])->name('register.show');
 Route::post('register', [RegisterController::class, 'create'])->name('register.create');
 
+// Home Route
+Route::get('/', function () {
+    return Inertia::render('Home', [
+       'profilePhotoUrl' => asset('images/profile-photo.jpg')
+    ]);
+})->name('home');
+
 // Auth Routes
 Route::middleware('auth')->group(function () {
-    Route::get('/', function () {
-        return Inertia::render('Home', [
-           'profilePhotoUrl' => asset('images/profile-photo.jpg')
-        ]);
-    })->name('home');
-
     Route::prefix('users/{user}')->group(function () {
         Route::prefix('settings')->group(function () {
             Route::get('/', [SettingsController::class, 'show'])->name('settings.show');
@@ -39,16 +40,17 @@ Route::middleware('auth')->group(function () {
         });
     });
 
-    Route::prefix('tasks')->group(function () {
-        Route::get('/', [TaskController::class, 'index'])->name('tasks.index');
-        Route::get('/index-data', [TaskController::class, 'indexData'])->name('tasks.data');
-        Route::get('/index-data/filters', [TaskController::class, 'getFilters'])->name('tasks.filters');
-        Route::post('/', [TaskController::class, 'store'])->name('tasks.store');
-        Route::get('/{task}', [TaskController::class, 'show'])->name('tasks.show');
-        Route::get('/{task}/edit', [TaskController::class, 'edit'])->name('task.edit');
-        Route::put('/{task}', [TaskController::class, 'update'])->name('task.update');
-        Route::delete('/{task}', [TaskController::class, 'destroy'])->name('tasks.destroy');
-    });
-
     Route::get('logout', [LoginController::class, 'logout'])->name('logout');
+});
+
+// Task Routes
+Route::prefix('tasks')->group(function () {
+    Route::get('/', [TaskController::class, 'index'])->name('tasks.index');
+    Route::get('/index-data', [TaskController::class, 'indexData'])->name('tasks.data');
+    Route::get('/index-data/filters', [TaskController::class, 'getFilters'])->name('tasks.filters');
+    Route::post('/', [TaskController::class, 'store'])->name('tasks.store');
+    Route::get('/{task}', [TaskController::class, 'show'])->name('tasks.show');
+    Route::get('/{task}/edit', [TaskController::class, 'edit'])->name('task.edit');
+    Route::put('/{task}', [TaskController::class, 'update'])->name('task.update');
+    Route::delete('/{task}', [TaskController::class, 'destroy'])->name('tasks.destroy');
 });
