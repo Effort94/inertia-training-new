@@ -27,13 +27,9 @@ class PokemonController extends Controller
             'search' => $request->get('search'),
             'page' => $request->get('page', 1),
             'limit' => $request->get('limit', 10),
+            'sort_field' => $request->get('sortField', 'id'),
+            'sort_order' => $request->get('sortOrder', 'asc'),
         ];
-
         return app(PokemonService::class)->fetchIndexDataForDatatable($parameters);
-    }
-
-    public function prepareDatatableHeaders()
-    {
-
     }
 }

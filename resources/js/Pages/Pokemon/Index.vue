@@ -5,6 +5,9 @@
                 <Datatable
                     ref="datatable"
                     data-endpoint="/api/pokemon"
+                    :has-filters="false"
+                    :show-checkboxes="false"
+                    :show-actions="false"
                 ></Datatable>
             </div>
         </div>
@@ -15,21 +18,12 @@
 import Layout from "@/Shared/Layout.vue"
 import Button from "@/Shared/Form/Button.vue";
 import Datatable from "@/Shared/Datatable.vue";
-import TaskModal from "@/Pages/Tasks/Components/CreateModal.vue";
-import Modal from "@/Shared/Modal.vue";
-import axios from "axios";
 
 export default {
     components: {
         Layout,
         Button,
         Datatable,
-    },
-
-    methods: {
-        fetchData() {
-            this.$refs.datatable.fetchTableData();
-        },
     },
 }
 </script>

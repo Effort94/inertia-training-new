@@ -34,12 +34,12 @@
                     class="block pt-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
                     v-model="filters.search"
                     @keyup="fetchTableData()"
-                    placeholder="Search for users"
+                    placeholder="Search"
                 >
             </div>
 
             <!-- Create Button -->
-            <div class="text-right">
+            <div class="text-right" v-show="showActions">
                 <Button name="create" @click="create">Create</Button>
             </div>
         </div>
@@ -51,7 +51,7 @@
                 <tr>
                     <th scope="col" class="p-4">
                         <div class="flex items-center">
-                            <input
+                            <input v-if="showCheckboxes"
                                 type="checkbox"
                                 @change="toggleSelectAll($event)"
                                 :checked="areAllSelected"
@@ -85,7 +85,7 @@
                     class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                     <td class="w-4 p-4">
                         <div class="flex items-center">
-                            <input
+                            <input v-if="showCheckboxes"
                                 type="checkbox"
                                 :value="data.id"
                                 v-model="selectedIds"
@@ -103,11 +103,11 @@
                     </td>
 
                     <!-- Action Menu Column -->
-                    <td class="px-6 py-4 text-right">
+                    <td class="px-6 py-4 text-right" v-if="showActionMenu">
                         <div class="relative inline-block text-left">
                             <!-- Action Menu Toggle Button -->
                             <button
-                                @click="showActionMenu(data.id)"
+                                @click="displayActionMenu(data.id)"
                                 type="button"
                                 class="inline-flex items-center p-2 text-sm font-medium text-gray-400 bg-gray-800 rounded-md shadow-sm hover:bg-gray-700 dark:text-gray-300 dark:bg-gray-900 dark:hover:bg-gray-700"
                                 @click.stop
@@ -241,6 +241,18 @@ export default {
         dataEndpoint: {
             type: String,
             default: null,
+        },
+        hasFilters: {
+            type: Boolean,
+            default: true,
+        },
+        showCheckboxes: {
+            type: Boolean,
+            default: true
+        },
+        showActions: {
+            type: Boolean,
+            default: true
         }
     },
 
@@ -276,9 +288,11 @@ export default {
 
     methods: {
         loadFilters() {
-            axios.get(this.url + '/filters').then((response) => {
-                this.filters.filters = response.data;
-            });
+            if (this.hasFilters) {
+                axios.get(this.url + '/filters').then((response) => {
+                    this.filters.filters = response.data;
+                });
+            }
         },
         toggleSelectAll(event) {
             if (event.target.checked) {
@@ -351,7 +365,7 @@ export default {
         create() {
             this.$emit('create');
         },
-        showActionMenu(id) {
+        displayActionMenu(id) {
             this.openActionMenu = true;
             this.activeActionMenuId = this.activeActionMenuId === id ? null : id;
             if (this.activeActionMenuId) {
