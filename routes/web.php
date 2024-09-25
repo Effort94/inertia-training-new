@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Pokemon\PokemonController;
 use App\Http\Controllers\Setting\SettingsController;
 use App\Http\Controllers\Task\TaskController;
 use Illuminate\Support\Facades\Route;
@@ -53,4 +54,9 @@ Route::prefix('tasks')->group(function () {
     Route::get('/{task}/edit', [TaskController::class, 'edit'])->name('task.edit');
     Route::put('/{task}', [TaskController::class, 'update'])->name('task.update');
     Route::delete('/{task}', [TaskController::class, 'destroy'])->name('tasks.destroy');
+});
+
+// Pokemon Route
+Route::prefix('pokemons')->group(function () {
+    Route::get('/', [PokemonController::class, 'index'])->name('pokemon.index');
 });

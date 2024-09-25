@@ -10,8 +10,8 @@
                             <NavLink :href="getUrl()" :active="$page.component === 'Home'">Home</NavLink>
                             <Dropdown>
                                 <template v-slot:button>
-                                    <NavLink class="flex items-center" :active="$page.component === 'Tasks/Index'" :is-link="false">
-                                        Projects
+                                    <NavLink class="flex items-center" :active="$page.component === 'example'" :is-link="false">
+                                        Examples
                                         <svg class="w-4 h-4 ml-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                                             <path d="M4.516 7.548c.436-.446 1.043-.481 1.576 0L10 11.295l3.908-3.747c.533-.481 1.141-.446 1.574 0 .436.445.408 1.197 0 1.615-.406.418-4.695 4.502-4.695 4.502a1.095 1.095 0 0 1-1.576 0S4.924 9.581 4.516 9.163c-.409-.418-.436-1.17 0-1.615z"/>
                                         </svg>
@@ -23,6 +23,21 @@
                                     </NavLink>
                                     <NavLink class="flex rounded px-4 py-2 hover:bg-gray-700 dark:hover:bg-gray-600" :href="getUrl('tasks')">
                                         Tasks
+                                    </NavLink>
+                                </template>
+                            </Dropdown>
+                            <Dropdown>
+                                <template v-slot:button>
+                                    <NavLink class="flex items-center" :active="$page.component === 'project'" :is-link="false">
+                                        Projects
+                                        <svg class="w-4 h-4 ml-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                            <path d="M4.516 7.548c.436-.446 1.043-.481 1.576 0L10 11.295l3.908-3.747c.533-.481 1.141-.446 1.574 0 .436.445.408 1.197 0 1.615-.406.418-4.695 4.502-4.695 4.502a1.095 1.095 0 0 1-1.576 0S4.924 9.581 4.516 9.163c-.409-.418-.436-1.17 0-1.615z"/>
+                                        </svg>
+                                    </NavLink>
+                                </template>
+                                <template v-slot:content>
+                                    <NavLink class="flex rounded px-4 py-2 hover:bg-gray-700 dark:hover:bg-gray-600" :href="getUrl('pokemon')">
+                                        Pokemon
                                     </NavLink>
                                 </template>
                             </Dropdown>
@@ -75,7 +90,8 @@
                 const pageUrls = {
                     login: `/login`,
                     tasks: `/tasks`,
-                    logout: '/logout'
+                    logout: '/logout',
+                    pokemon: '/pokemons'
                 };
 
                 if (this.isAuthorised) {
