@@ -8,7 +8,7 @@ export default {
 </script>
 
 <template>
-    <div class="flex flex-col min-h-screen w-full bg-gray-900">
+    <div class="flex flex-col min-h-screen w-full">
         <Header></Header>
         <div class="flex-1 flex flex-col w-full h-full">
             <slot></slot>

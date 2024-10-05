@@ -27,7 +27,7 @@ export default {
         linkClasses() {
             return {
                 'bg-gray-900 text-white rounded-md px-3 py-2': this.active,
-                'text-gray-600 dark:text-gray-300': !this.active && this.isLink,
+                'text-white': !this.active && this.isLink,
                 'cursor-pointer': !this.isLink
             };
         }

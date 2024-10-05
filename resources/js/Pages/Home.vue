@@ -1,102 +1,86 @@
 <template>
     <Layout>
-        <div class="w-full px-6 py-12">
-            <!-- Banner Section -->
-            <div class="relative mb-12">
-                <div class="relative overflow-hidden rounded-lg">
-                    <img :src="profilePhotoUrl" alt="Warren Davey" class="object-cover h-80 w-80 rounded-lg">
-                </div>
-                <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-                    <div class="text-white px-6">
-                        <h1 class="text-4xl font-bold mb-4">Warren Davey</h1>
-                        <p class="text-xl mb-4">A fullstack developer specializing in Laravel + Vue frameworks, focusing on writing clean and efficient code.</p>
-                        <p class="text-xl">My aim is to learn and stay up to date with best practices and develop elegant solutions.</p>
+        <section class="flex-grow flex flex-col text-white">
+            <!-- Profile Section -->
+            <div class="flex-grow flex justify-center items-center overflow-hidden bg-gray-800 p-12">
+                <div class="w-full max-w-6xl flex flex-col lg:flex-row items-center">
+                    <!-- Profile Picture & Social Links -->
+                    <div class="flex flex-col justify-center lg:justify-start items-center space-y-4">
+                        <img :src="profilePhotoUrl" alt="me" class="object-cover h-96 w-96 rounded-full shadow-lg">
+
+                        <div class="flex space-x-4">
+                            <a href="https://www.linkedin.com/in/warren-davey-469185166/" target="_blank" class="text-white hover:text-gray-300">
+                                <i class="fab fa-linkedin text-3xl"></i>
+                            </a>
+
+                            <a href="https://github.com/Effort94" target="_blank" class="text-white hover:text-gray-300">
+                                <i class="fab fa-github text-3xl"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- About Me, Skills, and Showcase -->
+                    <div class="lg:w-2/3 flex flex-col justify-center items-center lg:items-start lg:pl-12 mt-6">
+                        <h1 class="text-4xl font-bold mb-2">Hi, I'm Warren Davey</h1>
+                        <p class="text-lg mb-4">A fullstack developer specializing in Laravel + Vue frameworks, focusing on writing clean and efficient code.</p>
+                        <p class="text-lg mb-6">My aim is to learn and stay up to date with best practices and develop elegant solutions.</p>
+
+                        <!-- Skills Section -->
+                        <div id="skills" class="w-full bg-gray-700 p-6 rounded-lg mb-6">
+                            <h2 class="text-3xl font-bold text-center lg:text-left mb-6 text-white">Skills</h2>
+                            <div class="flex justify-center lg:justify-start space-x-8">
+                                <div v-for="skill in skills" :key="skill.name">
+                                    <div class="text-center text-5xl">
+                                        <i :class="skill.class"></i>
+                                        <h3 class="text-xl font-bold text-white">{{ skill.name }}</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-center items-center space-x-4 mt-6">
+                            <a href="path/to/your/cv.pdf" download class="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-blue-600 transition duration-300">
+                                Download my CV
+                            </a>
+                            <NavLink class="bg-green-500 font-semibold py-2 px-4 rounded-lg hover:bg-green-600" href="/tasks">
+                                View Showcase
+                            </NavLink>
+                        </div>
                     </div>
                 </div>
             </div>
-
-            <!-- About Section -->
-            <div class="mb-12">
-                <div class="text-white dark:bg-gray-800 p-8 rounded-lg shadow-lg">
-                    <h1 class="text-3xl font-bold mb-6">About</h1>
-                    <p class="mb-4">I studied at the University of Gloucester, graduating with a bachelor's honors degree in Interactive Game Design.</p>
-                    <p>I started my web developer career in 2019, initially working on simple bug fixes using vanilla HTML, CSS, and JavaScript.</p>
-                </div>
-            </div>
-
-            <!-- Skills Section -->
-            <div class="mb-12">
-                <div class="text-white dark:bg-gray-800 p-8 rounded-lg shadow-lg">
-                    <h1 class="text-3xl font-bold mb-6">Skills</h1>
-                    <ul class="list-disc list-inside space-y-3 text-lg">
-                        <li>Vue</li>
-                        <li>Laravel</li>
-                        <li>Inertia</li>
-                        <li>HTML</li>
-                        <li>CSS</li>
-                        <li>Javascript</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+        </section>
     </Layout>
 </template>
 
 <script>
 import Layout from "@/Shared/Layout.vue"
+import Button from "@/Shared/Form/Button.vue"
+import NavLink from "../Shared/NavLink.vue";
 
 export default {
     components: {
-        Layout
+        NavLink,
+        Layout,
+        Button
     },
 
     props: {
         profilePhotoUrl: {
             type: String
         }
+    },
+
+    data() {
+        return {
+            skills: [
+                { name: 'Laravel', class: 'fas fa-code text-purple-400 mb-2' },
+                { name: 'Vue.js', class: 'fas fa-code text-green-400 mb-2' },
+                { name: 'Tailwind CSS', class: 'fas fa-desktop text-purple-400 mb-2' },
+                { name: 'MySQL', class: 'fas fa-database text-green-400 mb-2' },
+                { name: 'Docker', class: 'fas fa-cloud text-purple-400 mb-2' },
+            ],
+        }
     }
 }
 </script>
-<style scoped>
-/* Full-width container with image on the left and text on the right */
-.content-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    padding: 20px;
-    box-sizing: border-box;
-    background-color: black;
-}
-
-/* Wrapper for the image to ensure proper sizing and spacing */
-.banner-image-wrapper {
-    flex-shrink: 0; /* Prevent the image from shrinking */
-}
-
-.banner-image {
-    width: 200px;
-    height: 200px;
-    border-radius: 25%;
-    object-fit: cover;
-    border: 2px solid #ddd;
-}
-
-/* Styling for the text area */
-.content-text {
-    flex: 1;
-    margin-left: 20px;
-}
-
-.content-text h1 {
-    margin: 0;
-    font-size: 24px;
-    color: white;
-}
-
-.content-text p {
-    margin: 5px 0 0;
-    font-size: 16px;
-    color: white;
-}
-</style>
