@@ -2,7 +2,7 @@
     <Layout>
         <section class="flex-grow flex flex-col text-white">
             <!-- Profile Section -->
-            <div class="flex-grow flex justify-center items-center overflow-hidden bg-gray-800 p-12">
+            <div class="flex-grow flex justify-center items-center p-12">
                 <div class="w-full max-w-6xl flex flex-col lg:flex-row items-center">
                     <!-- Profile Picture & Social Links -->
                     <div class="flex flex-col justify-center lg:justify-start items-center space-y-4">
@@ -44,7 +44,7 @@
                                     class="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-blue-600 transition duration-300">
                                 Download CV
                             </button>
-                            <NavLink class="bg-green-500 font-semibold py-2 px-4 rounded-lg hover:bg-green-600" href="/tasks">
+                            <NavLink class="bg-green-500 font-semibold py-2 px-4 rounded-lg hover:bg-green-600" href="/showcase">
                                 View Showcase
                             </NavLink>
                         </div>
