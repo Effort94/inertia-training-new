@@ -3,7 +3,9 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Pokemon\PokemonController;
+use App\Http\Controllers\Profile\ProfileController;
 use App\Http\Controllers\Setting\SettingsController;
+use App\Http\Controllers\Showcase\ShowcaseController;
 use App\Http\Controllers\Task\TaskController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -60,3 +62,9 @@ Route::prefix('tasks')->group(function () {
 Route::prefix('pokemons')->group(function () {
     Route::get('/', [PokemonController::class, 'index'])->name('pokemon.index');
 });
+
+// Download CV
+Route::get('/download-cv', [ProfileController::class, 'downloadCv'])->name('download.cv');
+
+// Showcase
+Route::get('/showcase', [ShowcaseController::class, 'index'])->name('showcase.index');

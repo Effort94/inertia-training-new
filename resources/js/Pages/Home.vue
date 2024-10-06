@@ -23,7 +23,8 @@
                     <div class="lg:w-2/3 flex flex-col justify-center items-center lg:items-start lg:pl-12 mt-6">
                         <h1 class="text-4xl font-bold mb-2">Hi, I'm Warren Davey</h1>
                         <p class="text-lg mb-4">A fullstack developer specializing in Laravel + Vue frameworks, focusing on writing clean and efficient code.</p>
-                        <p class="text-lg mb-6">My aim is to learn and stay up to date with best practices and develop elegant solutions.</p>
+                        <p class="text-lg mb-4">I believe anything can be created with code, no matter the complexity, design or uniqueness.</p>
+                        <p class="text-lg mb-6">My aim is to grow and keep up to date with best practices. Developing elegant but simple solutions for whatever problem arises.</p>
 
                         <!-- Skills Section -->
                         <div id="skills" class="w-full bg-gray-700 p-6 rounded-lg mb-6">
@@ -39,9 +40,10 @@
                         </div>
 
                         <div class="flex justify-center items-center space-x-4 mt-6">
-                            <a href="path/to/your/cv.pdf" download class="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-blue-600 transition duration-300">
-                                Download my CV
-                            </a>
+                            <button @click="downloadCV"
+                                    class="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-blue-600 transition duration-300">
+                                Download CV
+                            </button>
                             <NavLink class="bg-green-500 font-semibold py-2 px-4 rounded-lg hover:bg-green-600" href="/tasks">
                                 View Showcase
                             </NavLink>
@@ -57,6 +59,7 @@
 import Layout from "@/Shared/Layout.vue"
 import Button from "@/Shared/Form/Button.vue"
 import NavLink from "../Shared/NavLink.vue";
+import axios from "axios";
 
 export default {
     components: {
@@ -80,6 +83,24 @@ export default {
                 { name: 'MySQL', class: 'fas fa-database text-green-400 mb-2' },
                 { name: 'Docker', class: 'fas fa-cloud text-purple-400 mb-2' },
             ],
+        }
+    },
+
+    methods: {
+        async downloadCV() {
+            try {
+                const response = await axios.get('/download-cv', {
+                    responseType: 'blob'
+                });
+
+                const blob = new Blob([response.data], {type: 'application/pdf'});
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = 'cv.pdf';
+                link.click();
+            } catch (error) {
+                console.error('Error downloading CV:', error);
+            }
         }
     }
 }
