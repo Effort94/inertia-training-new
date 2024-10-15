@@ -86,10 +86,12 @@ class TaskService
     public function filterIndexData(Builder $query, array $parameters): Builder
     {
         // Search
-        $query = $query->when($parameters['search'] ?? null, function ($query, $keyword) {
-            return $query->where('title', 'like', '%' . $keyword . '%')
-                ->orWhere('description', 'like', '%' . $keyword . '%');
-        });
+        if (isset($parameters['search'])) {
+            $query->where(function ($query) use ($parameters) {
+                $query->where('title', 'like', '%' . $parameters['search'] . '%')
+                    ->orWhere('description', 'like', '%' . $parameters['search'] . '%');
+            });
+        }
 
         // filters
         if (isset($parameters['filters'])) {
@@ -102,7 +104,6 @@ class TaskService
 
         // Order
         if (isset($parameters['sort_field'])) {
-
             if ($parameters['sort_field'] === 'priority') {
                 $query->orderBy('priority_id', $parameters['sort_order']);
             } else {

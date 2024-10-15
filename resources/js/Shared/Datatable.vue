@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col py-4 dark:bg-gray-900">
+    <div class="flex flex-col py-4 dark:bg-gray-800">
         <!-- Filters and Search -->
         <div class="flex flex-wrap items-center justify-between gap-4 mb-2">
             <!-- Filters -->
@@ -103,7 +103,7 @@
                     </td>
 
                     <!-- Action Menu Column -->
-                    <td class="px-6 py-4 text-right" v-if="showActionMenu">
+                    <td class="px-6 py-4 text-right">
                         <div class="relative inline-block text-left">
                             <!-- Action Menu Toggle Button -->
                             <button

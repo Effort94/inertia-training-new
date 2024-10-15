@@ -7,7 +7,7 @@
         </div>
 
         <div class="flex justify-center items-center py-32">
-            <form class="w-3/4 max-w-screen-lg shadow-md rounded px-16 pt-8 pb-10 mb-4 bg-white dark:bg-gray-800" @submit.prevent="update">
+            <form class="w-3/4 max-w-screen-lg shadow-md rounded px-16 pt-8 pb-10 mb-4 bg-white dark:bg-gray-900" @submit.prevent="update">
                 <h1 class="text-3xl mb-6 dark:text-white">Account Settings</h1>
 
                 <div class="mb-6">

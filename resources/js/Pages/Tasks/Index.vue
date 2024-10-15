@@ -6,18 +6,16 @@
             </div>
         </div>
 
-        <div class="w-full dark:bg-gray-900 shadow-lg overflow-hidden px-2">
-            <div class="p-4">
-                <Datatable
-                    ref="datatable"
-                    @create="createTask"
-                    @show="showTask"
-                    @edit="editTask"
-                    @delete="openDeleteModal"
-                    data-endpoint="/tasks"
-                    :asModalActions="true"
-                ></Datatable>
-            </div>
+        <div class="px-12 dark:bg-gray-800">
+            <Datatable
+                ref="datatable"
+                @create="createTask"
+                @show="showTask"
+                @edit="editTask"
+                @delete="openDeleteModal"
+                data-endpoint="/tasks"
+                :asModalActions="true"
+            ></Datatable>
         </div>
 
         <TaskModal v-if="showModal"
