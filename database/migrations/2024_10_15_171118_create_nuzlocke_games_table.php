@@ -14,9 +14,16 @@ return new class extends Migration
         Schema::create('nuzlocke_games', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('description');
             $table->integer('player_count');
-            $table->integer('status_id');
-            $table->integer('user_id');
+            $table->unsignedBigInteger('status_id');
+            $table->unsignedBigInteger('user_id');
+            $table->date('start_date')->nullable();
+            $table->string('rules')->nullable();
+            $table->integer('attempts')->default(1);
+            $table->integer('gym_badges')->default(0);
+            $table->boolean('elite_four_defeated')->default(false);
+            $table->text('notes')->nullable();
             $table->timestamps();
         });
     }

@@ -14,26 +14,28 @@
         </div>
 
         <div v-if="games.length > 0" class="p-6 text-white">
-            <h1 class="text-xl mb-4">Your Current Games:</h1>
+            <h1 class="text-2xl font-semibold mb-6">Your Current Games:</h1>
 
-            <div v-for="game in games" :key="game.id" class="relative max-w-sm p-6 border border-gray-200 rounded-lg shadow-lg dark:bg-gray-800">
+            <div v-for="game in games" :key="game.id" class="relative max-w-sm p-6 border border-gray-700 rounded-lg shadow-lg dark:bg-gray-800 mb-4 transition-transform transform hover:scale-105">
 
-                <div class="flex flex-row">
-                    <div class="absolute right-4">
-                        <i :class="'fas ' + game.status.icon" class="text-2xl"></i>
-                    </div>
+                <div class="flex items-center justify-between">
+                    <ul class="ml-4 mb-0 text-gray-400">
+                        <li class="flex items-center mb-2">
+                            <span class="text-lg font-bold text-gray-100">{{ game.name }}</span>
+                        </li>
+                        <li class="flex items-center mb-2">
+                            <i class="fas fa-user text-gray-400"></i>
+                            <span class="bg-gray-700 text-gray-200 rounded-full px-2 py-1 text-xs ml-2">{{ game.player_count }}</span>
+                        </li>
+                    </ul>
 
-                    <div class="mb-4">
-                        <h2 class="text-2xl font-semibold">{{ game.name }}</h2>
+                    <div class="absolute top-4 right-4">
+                        <i :class="'fas ' + game.status.icon" class="text-2xl text-gray-300"></i>
                     </div>
                 </div>
 
-                <div class="mb-4">
-                    <p><strong>Players:</strong> {{ game.player_count }}</p>
-                </div>
-
-                <div class="text-center">
-                    <button @click="viewGame(game.id)" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                <div class="flex justify-end p-4 border-t border-gray-700">
+                    <button @click="viewGame(game.id)" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200">
                         View Game
                     </button>
                 </div>
@@ -42,6 +44,7 @@
 
         <GameModal v-if="showModal"
                    :isVisible="showModal"
+                   :nuzlockeRuleOptions="nuzlockeRuleOptions"
                    @close="closeModal"
         ></GameModal>
     </Layout>
@@ -65,6 +68,10 @@ export default {
         games: {
             Type: Object,
             required: true,
+        },
+        nuzlockeRuleOptions: {
+            type: Array,
+            required: true
         }
     },
 

@@ -13,7 +13,7 @@
                 <div v-if="form.errors.description" v-text="form.errors.description" class="text-red-500 text-sm mt-2"></div>
             </div>
             <div class="mb-6">
-                <Select name="Priority" v-model="form.priority" :disabled="!editable"></Select>
+                <Select id="priority" name="Priority" v-model="form.priority" :disabled="!editable" :options="priorityOptions"></Select>
                 <div v-if="form.errors.priority" v-text="form.errors.priority" class="text-red-500 text-sm mt-2"></div>
             </div>
         </template>
@@ -65,6 +65,10 @@ export default {
         isEditable: {
             type: Boolean,
             default: false,
+        },
+        priorityOptions: {
+            type: Array,
+            required: true
         }
     },
     data() {
@@ -72,7 +76,7 @@ export default {
             form: useForm({
                 title: this.task !== null ? this.task.title : '',
                 description: this.task !== null ? this.task.description : '',
-                priority: this.task !== null ? this.task.priority_id : 0,
+                priority: this.task !== null ? this.task.priority_id : "",
             }),
         }
     },

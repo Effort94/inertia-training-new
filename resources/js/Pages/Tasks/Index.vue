@@ -22,6 +22,7 @@
             :isVisible="showModal"
             :isEditable="isEditable"
             :task="selectedTask"
+            :priorityOptions="priorityOptions"
             @success="handleCreateTask"
             @close="closeModal"
             @refresh="fetchData"
@@ -45,7 +46,9 @@
                     dark:bg-red-700 dark:hover:bg-red-900"
                     @click="deleteTask(selectedTask)">
                 </Button>
+
             </template>
+
         </Modal>
     </Layout>
 </template>
@@ -68,7 +71,13 @@ export default {
     },
 
     props: {
-        flash: Object
+        flash: {
+            type: Object
+        },
+        priorityOptions: {
+            type: Array,
+            required: true,
+        }
     },
 
     data() {

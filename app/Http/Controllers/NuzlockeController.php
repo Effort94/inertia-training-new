@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\NuzlockeRequest;
 use App\Models\NuzlockeGame;
+use App\Models\NuzlockeRule;
 use App\Models\NuzlockeStatus;
 use Auth;
 use Illuminate\Http\RedirectResponse;
@@ -21,19 +22,27 @@ class NuzlockeController extends Controller
     public function index(): Response
     {
         return Inertia::render("Pokemon/Nuzlocke/Show", [
-            'games' => auth()->user()->nuzlockeGames()->with('status')->get()
+            'games' => auth()->user()->nuzlockeGames()->with('status')->get(),
+            'nuzlockeRuleOptions' => NuzlockeRule::all()->map(function ($nuzlocke_rule) {
+                return [
+                    'value' => $nuzlocke_rule->id,
+                    'text' => $nuzlocke_rule->name,
+                ];
+            }),
         ]);
     }
 
     /**
      * Create Nuzlocke
      *
+     * @param NuzlockeRequest $request
      * @return RedirectResponse
      */
     public function create(NuzlockeRequest $request):RedirectResponse
     {
         NuzlockeGame::create([
             'name' => $request->get('name'),
+            'description' => $request->get('description'),
             'player_count' => $request->get('player_count'),
             'status_id' => NuzlockeStatus::where('alias', 'in-progress')->first()->id,
             'user_id' => Auth::user()->id

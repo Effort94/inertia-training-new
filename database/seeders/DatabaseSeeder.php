@@ -16,7 +16,8 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             PrioritySeeder::class,
             TaskSeeder::class,
-            NuzlockeStatusesSeeder::class
+            NuzlockeStatusesSeeder::class,
+            NuzlockeRulesSeeder::class
         ]);
     }
 }

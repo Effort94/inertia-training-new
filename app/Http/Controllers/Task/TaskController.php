@@ -23,7 +23,14 @@ class TaskController extends Controller
      */
     public function index(): Response
     {
-        return Inertia::render('Tasks/Index');
+        return Inertia::render('Tasks/Index', [
+            'priorityOptions' => Priority::all()->map(function ($priority) {
+                return [
+                    'value' => $priority->id,
+                    'text' => $priority->name,
+                ];
+            }),
+        ]);
     }
 
     /**

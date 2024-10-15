@@ -23,7 +23,9 @@ class NuzlockeRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
+            'description' => ['required', 'string', 'max:255'],
             'player_count' => ['required', 'integer', 'min:1', 'max:4'],
+            'rules' => ['required', 'integer'],
         ];
     }
 }

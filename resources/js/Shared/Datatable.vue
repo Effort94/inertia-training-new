@@ -138,87 +138,120 @@
         </table>
 
         <!--    Pagination    -->
-        <div class="flex items-center justify-between px-4 py-3 sm:px-6 text-gray-500 dark:text-gray-400">
-            <!-- Left: Showing results info -->
-            <div class="text-sm dark:text-gray-300">
-                <p>
-                    Showing
-                    <span class="font-medium">{{ fromRecords }}</span>
-                    to
-                    <span class="font-medium">{{ toRecords }}</span>
-                    of
-                    <span class="font-medium">{{ pagination.totalRecords }}</span>
-                    results
-                </p>
-            </div>
-
-            <!-- Center: Pagination Controls -->
-                <ul class="flex h-10 items-center space-x-2">
-                    <!-- Previous Button -->
-                    <li>
-                        <a
-                            href="#"
-                            @click.prevent="changePage(pagination.currentPage - 1)"
-                            :class="[
-                                      'flex items-center justify-center px-4 h-10 leading-tight border rounded-md',
-                                      'text-gray-300 border-gray-300 hover:bg-gray-200 hover:text-gray-700',
-                                      { 'cursor-not-allowed opacity-50': !pagination.prevPageUrl }
-                                    ]"
-                            :aria-disabled="!pagination.prevPageUrl"
-                        >
-                            Previous
-                        </a>
-                    </li>
-
-                    <!-- Page Numbers -->
-                    <li v-for="page in pagination.lastPage" :key="page">
-                        <a
-                            href="#"
-                            @click.prevent="changePage(page)"
-                            :class="[
-                                  'flex items-center justify-center px-4 h-10 leading-tight border rounded-md',
-                                  page === pagination.currentPage
-                                    ? 'text-white bg-indigo-600 hover:bg-indigo-500'
-                                    : 'text-gray-400 border-gray-300 hover:bg-gray-400 hover:text-gray-700 font-bold'
-                                ]"
-                        >
-                            {{ page }}
-                        </a>
-                    </li>
-
-                    <!-- Next Button -->
-                    <li>
-                        <a
-                            href="#"
-                            @click.prevent="changePage(pagination.currentPage + 1)"
-                            :class="[
-                                      'flex items-center justify-center px-4 h-10 leading-tight border rounded-md',
-                                      'text-gray-300 border-gray-300 hover:bg-gray-200 hover:text-gray-700',
-                                      { 'cursor-not-allowed opacity-50': !pagination.nextPageUrl }
-                                    ]"
-                            :aria-disabled="!pagination.nextPageUrl"
-                        >
-                            Next
-                        </a>
-                    </li>
-                </ul>
-
-            <!-- Right: Rows per page selector -->
-            <div class="rows-per-page-selector flex items-center">
-                <label for="rowsPerPage" class="mr-2 text-sm text-gray-700 dark:text-gray-400">Rows per page:</label>
-                <select
-                    id="rowsPerPage"
-                    v-model="pagination.rowsPerPage"
-                    @change="changePage(1)"
-                    class="px-3 py-2 border border-gray-300 rounded-md text-sm bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400"
-                >
-                    <option v-for="option in pagination.rowsPerPageOptions" :key="option" :value="option">{{
-                            option
-                        }}
-                    </option>
-                </select>
-            </div>
+    <!-- Pagination -->
+    <div class="flex items-center justify-between px-4 py-3 sm:px-6 text-gray-500 dark:text-gray-400">
+        <!-- Left: Showing results info -->
+        <div class="text-sm dark:text-gray-300">
+            <p>
+                Showing
+                <span class="font-medium">{{ fromRecords }}</span>
+                to
+                <span class="font-medium">{{ toRecords }}</span>
+                of
+                <span class="font-medium">{{ pagination.totalRecords }}</span>
+                results
+            </p>
         </div>
+
+        <nav class="pagination-container flex justify-center" aria-label="Pagination">
+            <ul class="flex h-10 items-center space-x-2">
+                <!-- Previous Button -->
+                <li>
+                    <a
+                        href="#"
+                        @click.prevent="changePage(pagination.currentPage - 1)"
+                        :class="[
+                            'flex items-center justify-center px-4 h-10 leading-tight border rounded-md',
+                            'text-gray-300 border-gray-300 hover:bg-gray-200 hover:text-gray-700',
+                            { 'cursor-not-allowed opacity-50': !pagination.prevPageUrl }
+                        ]"
+                        :aria-disabled="!pagination.prevPageUrl"
+                    >
+                        Previous
+                    </a>
+                </li>
+
+                <!-- First Page -->
+                <li v-if="paginatedPages[0] !== 1">
+                    <a
+                        href="#"
+                        @click.prevent="changePage(1)"
+                        :class="[
+                            'flex items-center justify-center px-4 h-10 leading-tight border rounded-md mr-8',
+                            pagination.currentPage === 1
+                                ? 'text-white bg-indigo-600 hover:bg-indigo-500'
+                                : 'text-gray-400 border-gray-300 hover:bg-gray-400 hover:text-gray-700 font-bold'
+                        ]"
+                    >
+                    1
+                    </a>
+                </li>
+
+                <!-- Page Numbers -->
+                <li v-for="page in paginatedPages" :key="page">
+                    <a
+                        href="#"
+                        @click.prevent="changePage(page)"
+                        :class="[
+                            'flex items-center justify-center px-4 h-10 leading-tight border rounded-md',
+                            page === pagination.currentPage
+                                ? 'text-white bg-indigo-600 hover:bg-indigo-500'
+                                : 'text-gray-400 border-gray-300 hover:bg-gray-400 hover:text-gray-700 font-bold'
+                        ]"
+                    >
+                        {{ page }}
+                    </a>
+                </li>
+
+                <!-- Last Page -->
+                <li v-if="paginatedPages[paginatedPages.length - 1] !== pagination.lastPage">
+                    <a
+                        href="#"
+                        @click.prevent="changePage(pagination.lastPage)"
+                        :class="[
+                            'flex items-center justify-center px-4 h-10 leading-tight border rounded-md ml-8',
+                            pagination.currentPage === pagination.lastPage
+                                ? 'text-white bg-indigo-600 hover:bg-indigo-500'
+                                : 'text-gray-400 border-gray-300 hover:bg-gray-400 hover:text-gray-700 font-bold'
+                        ]"
+                    >
+                    {{ pagination.lastPage }}
+                    </a>
+                </li>
+
+                <!-- Next Button -->
+                <li>
+                    <a
+                        href="#"
+                        @click.prevent="changePage(pagination.currentPage + 1)"
+                        :class="[
+                            'flex items-center justify-center px-4 h-10 leading-tight border rounded-md',
+                            'text-gray-300 border-gray-300 hover:bg-gray-200 hover:text-gray-700',
+                            { 'cursor-not-allowed opacity-50': !pagination.nextPageUrl }
+                        ]"
+                        :aria-disabled="!pagination.nextPageUrl"
+                    >
+                        Next
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Right: Rows per page selector -->
+        <div class="rows-per-page-selector flex items-center">
+            <label for="rowsPerPage" class="mr-2 text-sm text-gray-700 dark:text-gray-400">Rows per page:</label>
+            <select
+                id="rowsPerPage"
+                v-model="pagination.rowsPerPage"
+                @change="changePage(1)"
+                class="px-3 py-2 border border-gray-300 rounded-md text-sm bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400"
+            >
+                <option v-for="option in pagination.rowsPerPageOptions" :key="option" :value="option">
+                    {{ option }}
+                </option>
+            </select>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -398,6 +431,22 @@ export default {
         },
         toRecords() {
             return this.pagination.to !== null ? this.pagination.to : 0;
+        },
+        paginatedPages() {
+            const pages = [];
+            const currentPage = this.pagination.currentPage;
+            const lastPage = this.pagination.lastPage;
+
+            // Show the first 2 pages, the current page, and the last page
+            const startPage = Math.max(1, currentPage - 3);
+            const endPage = Math.min(lastPage, currentPage + 3);
+
+            // Add the range of pages
+            for (let i = startPage; i <= endPage; i++) {
+                pages.push(i);
+            }
+
+            return pages;
         }
     },
     mounted() {

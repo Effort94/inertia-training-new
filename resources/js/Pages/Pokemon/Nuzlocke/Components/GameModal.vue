@@ -9,8 +9,16 @@
                 <div v-if="form.errors.name" v-text="form.errors.name" class="text-red-500 text-sm mt-2"></div>
             </div>
             <div class="mb-6">
+                <Text name="Description" v-model="form.description"></Text>
+                <div v-if="form.errors.description" v-text="form.errors.description" class="text-red-500 text-sm mt-2"></div>
+            </div>
+            <div class="mb-6">
                 <Text :min="1" :max="4" name="Number of players" v-model="form.player_count" type="number"></Text>
                 <div v-if="form.errors.player_count" v-text="form.errors.player_count" class="text-red-500 text-sm mt-2"></div>
+            </div>
+            <div class="mb-6">
+                <Select id="nuzlocke-rules" name="Nuzlocke Rules" v-model="form.rules" :options="nuzlockeRuleOptions"></Select>
+                <div v-if="form.errors.rules" v-text="form.errors.rules" class="text-red-500 text-sm mt-2"></div>
             </div>
         </template>
         <template v-slot:footer>
@@ -42,12 +50,18 @@ export default {
             type: Boolean,
             default: false,
         },
+        nuzlockeRuleOptions: {
+            type: Array,
+            required: true
+        }
     },
     data() {
         return {
             form: useForm({
                 name: '',
                 player_count: '1',
+                description: '',
+                rules: ''
             }),
         }
     },

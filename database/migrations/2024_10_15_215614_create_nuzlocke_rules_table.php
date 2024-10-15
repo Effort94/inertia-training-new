@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('nuzlocke_statuses', function (Blueprint $table) {
+        Schema::create('nuzlocke_rules', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('alias')->unique();
-            $table->string('icon');
             $table->timestamps();
         });
     }
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('nuzlocke_statuses');
+        Schema::dropIfExists('nuzlocke_rules');
     }
 };
