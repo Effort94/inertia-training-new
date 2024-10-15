@@ -22,6 +22,11 @@ class ShowcaseController extends Controller
                 'description' => 'A user authentication system with registration, login, and account settings.',
                 'link' => route('login.show')
             ],
+            [
+                'name' => 'Pokemon Nuzlocke Helper',
+                'description' => 'A system to help track soul links, nuzlockes through useful tracking, advice and help.',
+                'link' => route('nuzlocke.show')
+            ],
         ];
 
         return Inertia::render('Showcase/Index', [

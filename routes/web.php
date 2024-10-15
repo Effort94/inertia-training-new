@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\NuzlockeController;
 use App\Http\Controllers\Pokemon\PokemonController;
 use App\Http\Controllers\Profile\ProfileController;
 use App\Http\Controllers\Setting\SettingsController;
@@ -61,6 +62,13 @@ Route::prefix('tasks')->group(function () {
 // Pokemon Route
 Route::prefix('pokemons')->group(function () {
     Route::get('/', [PokemonController::class, 'index'])->name('pokemon.index');
+
+    Route::prefix('nuzlocke')->group(function () {
+        Route::group(['middleware' => 'auth'], function () {
+            Route::get('/', [NuzlockeController::class, 'index'])->name('nuzlocke.show');
+            Route::post('/create', [NuzlockeController::class, 'create'])->name('nuzlocke.create');
+        });
+    });
 });
 
 // Download CV

@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('nuzlockegames', function (Blueprint $table) {
+        Schema::create('nuzlocke_games', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->integer('player_count');
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('nuzlockegames');
+        Schema::dropIfExists('nuzlocke_games');
     }
 };
