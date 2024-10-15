@@ -13,15 +13,15 @@ class NuzlockeStatusesSeeder extends Seeder
     public function run(): void
     {
         $statuses = [
-            ['alias' => 'in-progress', 'name' => 'In Progress'],
-            ['alias' => 'complete', 'name' => 'Complete'],
+            ['alias' => 'in-progress', 'name' => 'In Progress', 'icon' => 'fa-spinner fa-spin'],
+            ['alias' => 'complete', 'name' => 'Complete', 'icon' => 'fa-check'],
         ];
 
-        foreach ($statuses as $status) {
-            NuzlockeStatus::updateOrCreate(
-                ['alias' => $status['alias']],
-                ['name' => $status['name']]
-            );
-        }
+        // Upsert statuses in a single query
+        NuzlockeStatus::upsert(
+            $statuses,
+            ['alias'],
+            ['name', 'icon']
+        );
     }
 }

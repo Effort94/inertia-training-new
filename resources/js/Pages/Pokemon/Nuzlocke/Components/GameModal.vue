@@ -9,7 +9,7 @@
                 <div v-if="form.errors.name" v-text="form.errors.name" class="text-red-500 text-sm mt-2"></div>
             </div>
             <div class="mb-6">
-                <Text :min="1" :max="4" name="number of players" v-model="form.player_count" type="number"></Text>
+                <Text :min="1" :max="4" name="Number of players" v-model="form.player_count" type="number"></Text>
                 <div v-if="form.errors.player_count" v-text="form.errors.player_count" class="text-red-500 text-sm mt-2"></div>
             </div>
         </template>
@@ -47,7 +47,7 @@ export default {
         return {
             form: useForm({
                 name: '',
-                number_of_players: '1',
+                player_count: '1',
             }),
         }
     },
@@ -59,7 +59,7 @@ export default {
             this.form.post('/pokemons/nuzlocke/create', {
                 onSuccess: () => {
                     this.form.reset()
-                    this.$emit('success', this.$page.props.flash.success);
+                    this.$emit('handleSuccess', this.$page.props.flash.success);
                 },
                 onError: (errors) => {
                     this.$emit('error', this.$page.props.flash.error);
