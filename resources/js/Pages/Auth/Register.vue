@@ -1,6 +1,6 @@
 <template>
     <Layout>
-        <div class="h-screen flex justify-center items-center">
+        <div class="flex flex-grow justify-center items-center">
             <form class="w-full max-w-md shadow-md rounded px-16 pt-8 pb-14 mb-4 bg-white dark:bg-gray-900" @submit.prevent="submit">
                 <h1 class="text-3xl mb-6 dark:text-white">Register</h1>
 

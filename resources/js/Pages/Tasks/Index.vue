@@ -6,7 +6,7 @@
             </div>
         </div>
 
-        <div class="px-12 dark:bg-gray-800">
+        <div class="px-12">
             <Datatable
                 ref="datatable"
                 @create="createTask"
