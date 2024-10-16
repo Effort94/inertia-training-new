@@ -23,9 +23,9 @@
         </template>
         <template v-slot:footer>
             <Button
-                    name="Create"
-                    @click="create"
-                    class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 dark:text-gray-200"
+                name="Create"
+                @click="create"
+                class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 dark:text-gray-200"
             >
             </Button>
         </template>
@@ -61,7 +61,7 @@ export default {
                 name: '',
                 player_count: '1',
                 description: '',
-                rules: ''
+                rules: 0
             }),
         }
     },
@@ -73,7 +73,7 @@ export default {
             this.form.post('/pokemons/nuzlocke/create', {
                 onSuccess: () => {
                     this.form.reset()
-                    this.$emit('handleSuccess', this.$page.props.flash.success);
+                    this.$emit('create', this.$page.props.flash.success);
                 },
                 onError: (errors) => {
                     this.$emit('error', this.$page.props.flash.error);

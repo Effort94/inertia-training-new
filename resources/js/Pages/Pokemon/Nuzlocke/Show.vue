@@ -12,32 +12,47 @@
                 </button>
             </div>
         </div>
+        <div v-if="games.length > 0" class="p-6 dark:text-white">
+            <h1 class="text-3xl font-bold mb-8">Your Current Games:</h1>
 
-        <div v-if="games.length > 0" class="p-6 text-white">
-            <h1 class="text-2xl font-semibold mb-6">Your Current Games:</h1>
-
-            <div v-for="game in games" :key="game.id" class="relative max-w-sm p-6 border border-gray-700 rounded-lg shadow-lg dark:bg-gray-800 mb-4 transition-transform transform hover:scale-105">
-
-                <div class="flex items-center justify-between">
-                    <ul class="ml-4 mb-0 text-gray-400">
-                        <li class="flex items-center mb-2">
-                            <span class="text-lg font-bold text-gray-100">{{ game.name }}</span>
-                        </li>
-                        <li class="flex items-center mb-2">
-                            <i class="fas fa-user text-gray-400"></i>
-                            <span class="bg-gray-700 text-gray-200 rounded-full px-2 py-1 text-xs ml-2">{{ game.player_count }}</span>
-                        </li>
-                    </ul>
-
-                    <div class="absolute top-4 right-4">
-                        <i :class="'fas ' + game.status.icon" class="text-2xl text-gray-300"></i>
+            <div class="flex flex-col md:flex-row md:flex-wrap gap-12">
+                <div v-for="game in games" :key="game.id" class="flex-col my-6 dark:bg-slate-800 border dark:border-slate-700 rounded-lg w-96 transition-transform transform hover:scale-105">
+                    <div class="border-b dark:border-slate-700 pt-3 px-3 pb-2">
+                      <span class="text-xl font-medium dark:text-slate-200">
+                        {{ game.name }}
+                      </span>
                     </div>
-                </div>
 
-                <div class="flex justify-end p-4 border-t border-gray-700">
-                    <button @click="viewGame(game.id)" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200">
-                        View Game
-                    </button>
+                    <div class="text-sm dark:text-slate-400 mt-4">
+                        <div class="flex flex-col dark:text-slate-300 gap-y-2 px-8 py-4">
+                            <div class="flex items-center">
+                                <i class="fas fa-list text-blue-500 w-8"></i>
+                                <p class="text-right font-semibold">{{ game.rule.name }}</p>
+                            </div>
+
+                            <div class="flex items-center">
+                                <i class="fas fa-users text-blue-500 w-8"></i>
+                                <p class="text-right font-semibold">{{ game.player_count }}</p>
+                            </div>
+
+                            <div class="flex items-center">
+                                <i class="fas fa-rotate-right text-blue-500 w-8"></i>
+                                <p class="text-right font-semibold">{{ game.attempts }}</p>
+                            </div>
+
+                            <div class="flex items-center">
+                                <i class="fas fa-calendar-alt text-blue-500 w-8"></i>
+                                <p class="text-right font-semibold">{{ game.start_date }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-slate-200 dark:border-slate-700 p-3 text-right">
+                        <button @click="viewGame(game.id)"
+                                class="text-sm px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200">
+                            View Game
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -45,6 +60,7 @@
         <GameModal v-if="showModal"
                    :isVisible="showModal"
                    :nuzlockeRuleOptions="nuzlockeRuleOptions"
+                   @create="handleSuccess"
                    @close="closeModal"
         ></GameModal>
     </Layout>
