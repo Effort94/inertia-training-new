@@ -6,8 +6,8 @@
             </div>
         </div>
 
-        <div class="flex justify-center items-center py-32">
-            <form class="w-3/4 max-w-screen-lg shadow-md rounded px-16 pt-8 pb-10 mb-4 bg-white dark:bg-gray-900" @submit.prevent="update">
+        <div class="flex flex-grow justify-center items-center">
+            <form class="w-full max-w-lg rounded px-16 pt-8 pb-10 dark:bg-gray-900" @submit.prevent="save">
                 <h1 class="text-3xl mb-6 dark:text-white">Account Settings</h1>
 
                 <div class="mb-6">
@@ -25,7 +25,7 @@
                     <div v-if="form.errors.password_confirmation" v-text="form.errors.password_confirmation" class="text-red-500 text-sm mt-2"></div>
                 </div>
 
-                <button @click="update()" class="w-full bg-blue-500 dark:bg-blue-700 text-white py-2 px-4 rounded-lg hover:bg-blue-600 dark:hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500" type="submit">Update</button>
+                <Button name="Save" class="w-full" @click="save"></Button>
             </form>
         </div>
     </Layout>
@@ -35,11 +35,13 @@
     import Layout from "@/Shared/Layout.vue"
     import { useForm } from '@inertiajs/vue3';
     import Text from "@/Shared/Form/Text.vue";
+    import Button from "@/Shared/Form/Button.vue";
 
     export default {
         components: {
             Text,
-            Layout
+            Layout,
+            Button
         },
 
         data() {
@@ -55,7 +57,10 @@
         },
 
         methods: {
-            update() {
+            /**
+             * Saves account settings
+             */
+            save() {
                 this.success = {};
                 this.errors = {};
 
