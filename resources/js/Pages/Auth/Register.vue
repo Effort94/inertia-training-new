@@ -1,7 +1,7 @@
 <template>
     <Layout>
         <div class="flex flex-grow justify-center items-center">
-            <form class="w-full max-w-md shadow-md rounded px-16 pt-8 pb-14 mb-4 bg-white dark:bg-gray-900" @submit.prevent="submit">
+            <form class="w-full max-w-md rounded px-16 pt-8 pb-14 mb-4 dark:bg-gray-900" @submit.prevent="submit">
                 <h1 class="text-3xl mb-6 dark:text-white">Register</h1>
 
                 <div class="mb-6">
@@ -28,7 +28,12 @@
 
                 <hr>
 
-                <p class="mt-4 text-gray-700 dark:text-gray-300">Already have have an account? <a href="login" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Login</a> </p>
+                <p class="mt-4 text-gray-700 dark:text-gray-300">
+                    Already have have an account?
+                    <a href="login" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                        Login
+                    </a>
+                </p>
             </form>
         </div>
     </Layout>
@@ -58,6 +63,9 @@
             }
         },
         methods: {
+            /**
+             * Submit the form.
+             */
             submit() {
                 this.form.post('/register');
             }
