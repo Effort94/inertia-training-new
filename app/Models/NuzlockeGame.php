@@ -28,4 +28,14 @@ class NuzlockeGame extends Model
     {
         return $this->belongsTo(NuzlockeStatus::class);
     }
+
+    /**
+     * A NuzlockeGame can have one set of NuzlockeRules.
+     *
+     * @return BelongsTo
+     */
+    public function rule(): BelongsTo
+    {
+        return $this->belongsTo(NuzlockeRule::class, 'nuzlocke_rules_id');
+    }
 }

@@ -22,7 +22,7 @@ class NuzlockeController extends Controller
     public function index(): Response
     {
         return Inertia::render("Pokemon/Nuzlocke/Show", [
-            'games' => auth()->user()->nuzlockeGames()->with('status')->get(),
+            'games' => auth()->user()->nuzlockeGames()->with('status', 'rule')->get(),
             'nuzlockeRuleOptions' => NuzlockeRule::all()->map(function ($nuzlocke_rule) {
                 return [
                     'value' => $nuzlocke_rule->id,
@@ -45,6 +45,8 @@ class NuzlockeController extends Controller
             'description' => $request->get('description'),
             'player_count' => $request->get('player_count'),
             'status_id' => NuzlockeStatus::where('alias', 'in-progress')->first()->id,
+            'start_date' => now(),
+            'nuzlocke_rules_id' => $request->get('rules'),
             'user_id' => Auth::user()->id
         ]);
 

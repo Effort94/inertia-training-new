@@ -19,7 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('status_id');
             $table->unsignedBigInteger('user_id');
             $table->date('start_date')->nullable();
-            $table->string('rules')->nullable();
+            $table->integer('nuzlocke_rules_id')->nullable();
             $table->integer('attempts')->default(1);
             $table->integer('gym_badges')->default(0);
             $table->boolean('elite_four_defeated')->default(false);
